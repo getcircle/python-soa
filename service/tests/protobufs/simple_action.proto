@@ -1,0 +1,15 @@
+package test.protobufs;
+
+import "soa.proto";
+
+message Request {
+    extend soa.ActionRequestParams {
+        optional string echo = 101;
+    }
+}
+
+message Response {
+    extend soa.ActionResponseResult {
+        optional string answer = 101;
+    }
+}
