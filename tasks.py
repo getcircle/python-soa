@@ -8,7 +8,7 @@ from invoke import (
     task,
 )
 
-PACKAGE_NAME = 'python-soa-protobuf'
+PACKAGE_NAME = 'service'
 INIT_FILE = '%s/__init__.py' % (PACKAGE_NAME,)
 
 VERSION_RE = re.compile(r'^\d+\.\d+\.\d+$')
