@@ -162,3 +162,13 @@ def release():
 def publish():
     with base_directory():
         _publish_release()
+
+
+@task(aliases=('csoaproto',))
+def compile_soa_proto():
+    with base_directory():
+        run(
+            'protoc service/protobufs/soa.proto'
+            ' --python_out service/protobufs/generated/'
+            ' --proto_path service/protobufs'
+        )
