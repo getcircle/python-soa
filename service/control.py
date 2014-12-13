@@ -57,6 +57,8 @@ class Server(object):
                 action_response,
             )
             action.execute()
+            if not action_response.result.errors:
+                action_response.result.success = True
 
         return service_response
 
@@ -90,4 +92,4 @@ def get_response_extension(service_name, action_response):
         service_name,
         action_response.action,
     )
-    return action_response.response.Extensions[extension]
+    return action_response.result.Extensions[extension]

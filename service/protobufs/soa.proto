@@ -32,7 +32,7 @@ message ActionResponseResult {
 
 message ActionResponse {
     required string action = 1;
-    optional ActionResponseResult response = 2;
+    optional ActionResponseResult result = 2;
 }
 
 message ServiceRequest {
