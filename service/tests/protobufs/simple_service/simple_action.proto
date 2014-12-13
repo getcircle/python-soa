@@ -1,0 +1,11 @@
+package simple_action;
+
+message Request {
+    optional string echo = 1;
+    optional string lurker = 2;
+}
+
+message Response {
+    optional string answer = 1;
+    optional string lurker = 2;
+}

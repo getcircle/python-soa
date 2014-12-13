@@ -2,6 +2,7 @@ package soa;
 
 message Control {
     optional string token = 1;
+    required string service = 2;
 }
 
 message ActionRequest {

@@ -1,0 +1,9 @@
+package another_action;
+
+message Request {
+    optional string test = 1;
+}
+
+message Response {
+    optional string answer = 1;
+}

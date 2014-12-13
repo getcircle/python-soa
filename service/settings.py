@@ -1,0 +1,3 @@
+DEFAULT_TRANSPORT = 'service.transports.local.instance'
+PROTOBUF_REQUEST_REGISTRY = None
+PROTOBUF_RESPONSE_REGISTRY = None
