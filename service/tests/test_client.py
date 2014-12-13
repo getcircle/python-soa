@@ -9,6 +9,7 @@ class SimpleAction(Action):
 
     def run(self, *args, **kwargs):
         self.response.answer = self.request.echo
+        self.response.lurker = self.request.lurker
 
 
 class AnotherAction(Action):
@@ -41,11 +42,20 @@ class TestClient(unittest.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_client_call_action(self):
-        response = self.client.call_action('simple_action', echo='echo!')
-        import ipdb; ipdb.set_trace()
-        action_response = response.actions[0]
-        self.assertTrue(action_response.success)
-        self.assertEqual(action_response.answer, 'echo!')
+        service_response = self.client.call_action(
+            'simple_action',
+            echo='echo!',
+            lurker='still here',
+        )
+
+        action_response = service_response.actions[0]
+        self.assertTrue(action_response.result.success)
+        response = service.control.get_response_extension(
+            service_response.control.service,
+            action_response,
+        )
+        self.assertEqual(response.answer, 'echo!')
+        self.assertEqual(response.lurker, 'still here')
 
     def test_client_call_action_unrecognized_service(self):
         client = service.control.Client('invalid')

@@ -33,8 +33,15 @@ class ProtobufRegistry(object):
 
     def get_extension(self, service_name, action_name):
         registry_service_name = self.get_registry_service_name(service_name)
-        service = getattr(self.registry, registry_service_name)
-        return getattr(service, action_name)
+        try:
+            service = getattr(self.registry, registry_service_name)
+        except AttributeError:
+            raise exceptions.UnrecognizedService(service_name)
+
+        try:
+            return getattr(service, action_name)
+        except AttributeError:
+            raise exceptions.UnrecognizedAction(action_name)
 
 
 request_registry = ProtobufRegistry(settings.PROTOBUF_REQUEST_REGISTRY)
