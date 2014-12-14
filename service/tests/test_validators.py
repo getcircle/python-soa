@@ -7,9 +7,13 @@ from . import base
 
 class SimpleAction(base.SimpleAction):
 
+    type_validators = {
+        'user_id': [validators.is_uuid4],
+    }
+
     field_validators = {
-        'user_id': {
-            validators.is_uuid4: 'INVALID',
+        'echo': {
+            lambda x: x.endswith('!'): 'Must be excited',
         },
     }
 
@@ -29,7 +33,7 @@ class TestValidators(base.TestCase):
     def tearDown(self):
         service.control.unlocalize_server(SampleServer)
 
-    def test_failed_validation_results_in_error(self):
+    def test_failed_type_validator_results_in_error(self):
         action_response = self.client.call_action(
             'simple_action',
             user_id='12321313',
@@ -41,6 +45,19 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.error, 'FIELD_ERROR')
         self.assertEqual(error_detail.key, 'user_id')
         self.assertEqual(error_detail.detail, 'INVALID')
+
+    def test_failed_field_validator_results_in_error(self):
+        action_response = self.client.call_action(
+            'simple_action',
+            echo='boo',
+        )
+        self.assertFalse(action_response.result.success)
+        self.assertIn('FIELD_ERROR', action_response.result.errors)
+
+        error_detail = action_response.result.error_details[0]
+        self.assertEqual(error_detail.error, 'FIELD_ERROR')
+        self.assertEqual(error_detail.key, 'echo')
+        self.assertEqual(error_detail.detail, 'Must be excited')
 
     def test_is_uuid4_validates_uuid(self):
         action_response = self.client.call_action(

@@ -3,6 +3,7 @@ import service.control
 
 class Action(object):
 
+    type_validators = None
     field_validators = None
 
     def __init__(self, service_name, action_request, action_response):
@@ -16,6 +17,8 @@ class Action(object):
         self.response = service.control.get_response_extension(action_response)
         if self.field_validators is None:
             self.field_validators = {}
+        if self.type_validators is None:
+            self.type_validators = {}
 
     def note_error(self, error, details=None):
         if details and len(details) != 2:
@@ -39,12 +42,22 @@ class Action(object):
     def is_error(self):
         return len(self._errors) > 1
 
+    def check_type_validators(self, field_name, value):
+        validators = self.type_validators.get(field_name, [])
+        for validator in validators:
+            if not validator(value):
+                self.note_field_error(field_name, 'INVALID')
+
+    def check_field_validators(self, field_name, value):
+        validators = self.field_validators.get(field_name, {})
+        for validator, error_message in validators.iteritems():
+            if not validator(value):
+                self.note_field_error(field_name, error_message)
+
     def validate(self, *args, **kwargs):
-        for field_name, validators in self.field_validators.iteritems():
-            value = getattr(self.request, field_name, None)
-            for validator, error_message in validators.iteritems():
-                if not validator(value):
-                    self.note_field_error(field_name, error_message)
+        for field, value in self.request.ListFields():
+            self.check_type_validators(field.name, value)
+            self.check_field_validators(field.name, value)
 
     def execute(self, *args, **kwargs):
         self.validate()
