@@ -3,6 +3,7 @@ package simple_action;
 message Request {
     optional string echo = 1;
     optional string lurker = 2;
+    optional string user_id = 3;
 }
 
 message Response {

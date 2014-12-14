@@ -5,8 +5,13 @@ message Control {
     required string service = 2;
 }
 
+message ActionControl {
+    required string service = 1;
+    required string action = 2;
+}
+
 message ActionRequest {
-    required string action = 1;
+    required ActionControl control = 1;
     optional ActionRequestParams params = 2;
 }
 
@@ -22,8 +27,9 @@ message ActionResponseResult {
     repeated ErrorDetail error_details = 3;
 
     message ErrorDetail {
-        optional string error_key = 1;
-        optional string error_detail = 2;
+        optional string error = 1;
+        optional string key = 2;
+        optional string detail = 3;
     }
 
     // give us room to extend the ActionResponseResult
@@ -31,7 +37,7 @@ message ActionResponseResult {
 }
 
 message ActionResponse {
-    required string action = 1;
+    required ActionControl control = 1;
     optional ActionResponseResult result = 2;
 }
 

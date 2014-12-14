@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/simple_service/simple_action.proto',
   package='simple_action',
-  serialized_pb=_b('\n:service/protobufs/tests/simple_service/simple_action.proto\x12\rsimple_action\"\'\n\x07Request\x12\x0c\n\x04\x65\x63ho\x18\x01 \x01(\t\x12\x0e\n\x06lurker\x18\x02 \x01(\t\"*\n\x08Response\x12\x0e\n\x06\x61nswer\x18\x01 \x01(\t\x12\x0e\n\x06lurker\x18\x02 \x01(\t')
+  serialized_pb=_b('\n:service/protobufs/tests/simple_service/simple_action.proto\x12\rsimple_action\"8\n\x07Request\x12\x0c\n\x04\x65\x63ho\x18\x01 \x01(\t\x12\x0e\n\x06lurker\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\"*\n\x08Response\x12\x0e\n\x06\x61nswer\x18\x01 \x01(\t\x12\x0e\n\x06lurker\x18\x02 \x01(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -46,6 +46,13 @@ _REQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='simple_action.Request.user_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -58,7 +65,7 @@ _REQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=77,
-  serialized_end=116,
+  serialized_end=133,
 )
 
 
@@ -94,8 +101,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=118,
-  serialized_end=160,
+  serialized_start=135,
+  serialized_end=177,
 )
 
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST

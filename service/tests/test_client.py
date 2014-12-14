@@ -1,40 +1,21 @@
-import unittest
-
 import service.control
-from service.actions import Action
 from service import exceptions
 
-
-class SimpleAction(Action):
-
-    def run(self, *args, **kwargs):
-        self.response.answer = self.request.echo
-        self.response.lurker = self.request.lurker
-
-
-class AnotherAction(Action):
-
-    def run(self, *args, **kwargs):
-        self.response.answer = self.request.test
+from . import base
 
 
 class SampleServer(service.control.Server):
     service_name = 'simple'
     actions = {
-        'simple_action': SimpleAction,
-        'another_action': AnotherAction,
+        'simple_action': base.SimpleAction,
+        'another_action': base.AnotherAction,
     }
 
 
-class TestClient(unittest.TestCase):
+class TestClient(base.TestCase):
 
     def setUp(self):
-        service.control.set_protobufs_request_registry(
-            'service.protobufs.tests.request_registry_pb2',
-        )
-        service.control.set_protobufs_response_registry(
-            'service.protobufs.tests.response_registry_pb2',
-        )
+        super(TestClient, self).setUp()
         service.control.localize_server(SampleServer)
         self.client = service.control.Client('simple')
 
@@ -42,18 +23,14 @@ class TestClient(unittest.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_client_call_action(self):
-        service_response = self.client.call_action(
+        action_response = self.client.call_action(
             'simple_action',
             echo='echo!',
             lurker='still here',
         )
 
-        action_response = service_response.actions[0]
         self.assertTrue(action_response.result.success)
-        response = service.control.get_response_extension(
-            service_response.control.service,
-            action_response,
-        )
+        response = service.control.get_response_extension(action_response)
         self.assertEqual(response.answer, 'echo!')
         self.assertEqual(response.lurker, 'still here')
 
