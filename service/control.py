@@ -4,7 +4,7 @@ from . import (
     settings,
     utils,
 )
-from .protobufs.generated import soa_pb2
+from .protobufs.common import soa_pb2
 from .transports import local as local_transport
 
 

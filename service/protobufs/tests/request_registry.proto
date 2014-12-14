@@ -1,0 +1,14 @@
+package tests.registry.requests;
+
+import "service/protobufs/common/soa.proto";
+
+import "service/protobufs/tests/simple_service/another_action.proto";
+import "service/protobufs/tests/simple_service/simple_action.proto";
+
+
+message SimpleService {
+    extend soa.ActionRequestParams {
+        optional another_action.Request another_action = 101;
+        optional simple_action.Request simple_action = 102;
+    }
+}

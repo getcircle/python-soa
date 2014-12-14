@@ -1,5 +1,5 @@
 from .base import BaseTransport
-from ..protobufs.generated import soa_pb2
+from ..protobufs.common import soa_pb2
 
 
 class LocalTransport(BaseTransport):

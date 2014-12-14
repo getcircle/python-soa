@@ -30,10 +30,10 @@ class TestClient(unittest.TestCase):
 
     def setUp(self):
         service.control.set_protobuf_request_registry_path(
-            'service.tests.protobufs.request_registry_pb2',
+            'service.protobufs.tests.request_registry_pb2',
         )
         service.control.set_protobuf_response_registry_path(
-            'service.tests.protobufs.response_registry_pb2',
+            'service.protobufs.tests.response_registry_pb2',
         )
         service.control.localize_server(SampleServer)
         self.client = service.control.Client('simple')

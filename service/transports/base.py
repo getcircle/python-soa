@@ -1,5 +1,5 @@
 from .. import exceptions
-from ..protobufs.generated import soa_pb2
+from ..protobufs.common import soa_pb2
 
 
 class BaseTransport(object):
