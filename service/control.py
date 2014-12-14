@@ -14,7 +14,11 @@ class Client(object):
         self.service_name = service_name
         self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
 
+    def set_transport(self, transport):
+        self.transport = transport
+
     def call_action(self, action_name, **params):
+        import ipdb; ipdb.set_trace()
         service_request = soa_pb2.ServiceRequest()
         service_request.control.service = self.service_name
 
@@ -63,12 +67,12 @@ class Server(object):
         return service_response
 
 
-def set_protobuf_request_registry_path(path_name):
-    registry.request_registry.set_registry_path(path_name)
+def set_protobufs_request_registry(path_name_or_registry):
+    registry.request_registry.set_registry(path_name_or_registry)
 
 
-def set_protobuf_response_registry_path(path_name):
-    registry.response_registry.set_registry_path(path_name)
+def set_protobufs_response_registry(path_name_or_registry):
+    registry.response_registry.set_registry(path_name_or_registry)
 
 
 def localize_server(server_class):

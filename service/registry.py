@@ -16,13 +16,18 @@ class ProtobufRegistry(object):
 
     @property
     def registry(self):
-        if not hasattr(self, '_protobuf_registry'):
-            self._protobuf_registry = import_module(self._registry_path)
+        if not self.has_registry():
+            self.load_registry(self._registry_path)
         return self._protobuf_registry
 
-    def set_registry_path(self, registry_path):
-        self._registry_path = registry_path
-        self.reset()
+    def has_registry(self):
+        return hasattr(self, '_protobuf_registry')
+
+    def set_registry(self, registry_or_path):
+        if isinstance(registry_or_path, basestring):
+            self._protobuf_registry = import_module(registry_or_path)
+        else:
+            self._protobuf_registry = registry_or_path
 
     def get_registry_path(self):
         return self._registry_path

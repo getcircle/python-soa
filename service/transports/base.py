@@ -8,9 +8,12 @@ class BaseTransport(object):
         if not isinstance(service_request, soa_pb2.ServiceRequest):
             raise exceptions.InvalidServiceRequest(service_request)
 
-        serialized_request = service_request.SerializeToString()
-        serialized_response = self.handle_request(serialized_request)
+        serialized_response = self.handle_request(service_request)
         return soa_pb2.ServiceResponse.FromString(serialized_response)
 
-    def handle_request(self, serialized_request):
-        raise NotImplementedError('Transport must implement `handle_request`')
+    def handle_request(self, service_request):
+        serialized_request = service_request.SerializeToString()
+        return self.process_request(service_request, serialized_request)
+
+    def process_request(self, service_request, serialized_request):
+        raise NotImplementedError('Transport must implement `process_request`')

@@ -29,10 +29,10 @@ class SampleServer(service.control.Server):
 class TestClient(unittest.TestCase):
 
     def setUp(self):
-        service.control.set_protobuf_request_registry_path(
+        service.control.set_protobufs_request_registry(
             'service.protobufs.tests.request_registry_pb2',
         )
-        service.control.set_protobuf_response_registry_path(
+        service.control.set_protobufs_response_registry(
             'service.protobufs.tests.response_registry_pb2',
         )
         service.control.localize_server(SampleServer)
