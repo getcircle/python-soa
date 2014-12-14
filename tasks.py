@@ -164,11 +164,25 @@ def publish():
         _publish_release()
 
 
-@task(aliases=('csoaproto',))
+@task
+def ensure_init_exists():
+    with base_directory():
+        for root, dirs, files in os.walk('service'):
+            if '__init__.py' not in files:
+                path = os.path.join(root, '__init__.py')
+                open(path, 'a').close()
+
+
+@task(aliases=('csoaproto',), post=[ensure_init_exists])
 def compile_soa_proto():
     with base_directory():
         run(
-            'protoc service/protobufs/soa.proto'
-            ' --python_out service/protobufs/generated/'
-            ' --proto_path service/protobufs'
+            "find . -type f -name '*.proto'"
+            " | xargs protoc --proto_path . --python_out ."
         )
+
+
+@task
+def clean_proto_python():
+    with base_directory():
+        run("find service/protobufs -name '*.py' | xargs rm")
