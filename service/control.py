@@ -36,8 +36,14 @@ class Client(object):
             else:
                 raise exceptions.RogueParameter(key)
 
-        response = self.transport.send_request(service_request)
-        return response.actions[0]
+        service_response = self.transport.send_request(service_request)
+        extension = registry.response_registry.get_extension(
+            self.service_name,
+            action_name,
+        )
+        action_response = service_response.actions[0]
+        response = action_response.result.Extensions[extension]
+        return action_response, response
 
 
 class Server(object):
