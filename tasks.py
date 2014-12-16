@@ -132,22 +132,6 @@ def _push_release_changes(release_version):
         print 'make sure you remember to explictily push the tag!'
 
 
-def _publish_release():
-    publish = raw_input('publish release to pypi? (y/n): ')
-    if publish == 'y':
-        print 'publishing release to pypi...'
-        result = subprocess.check_call(
-            ['python', 'setup.py', 'sdist', 'upload'],
-        )
-        if result:
-            raise ReleaseException(
-                'failed publishing to pypi: %s' % (result,)
-            )
-        print 'finished publishing to pypi...'
-    else:
-        print 'not publishing to pypi!'
-
-
 @task
 def release():
     with base_directory():
@@ -155,13 +139,6 @@ def release():
         _commit_release_changes(release_version)
         _create_release_tag(release_version)
         _push_release_changes(release_version)
-        _publish_release()
-
-
-@task
-def publish():
-    with base_directory():
-        _publish_release()
 
 
 @task
