@@ -40,7 +40,7 @@ class Action(object):
         self.note_error('FIELD_ERROR', (field_name, error_message))
 
     def is_error(self):
-        return len(self._errors) > 1
+        return bool(self._errors)
 
     def check_type_validators(self, field_name, value):
         validators = self.type_validators.get(field_name, [])
@@ -63,7 +63,7 @@ class Action(object):
         self.validate()
         if not self.is_error():
             self.run(*args, **kwargs)
-        self._action_response.result.success = self.is_error()
+        self._action_response.result.success = not self.is_error()
 
     def run(self, *args, **kwargs):
         raise NotImplementedError('Action must define `run` method')

@@ -10,14 +10,17 @@ class HttpsTransport(BaseTransport):
 
     def process_request(self, service_request, serialized_request):
         endpoint = self.endpoint_map[service_request.control.service]
-        import ipdb; ipdb.set_trace()
         response = requests.post(
             endpoint,
             data=serialized_request,
             headers={'content-type': 'application/x-protobuf'},
             verify=False,
         )
-        print response.content
+        # TODO: build an error response here if things go to shit
+        if response.ok:
+            return response.content
+        else:
+            raise ValueError('see note above')
 
     def set_endpoint(self, service_name, endpoint):
         self.endpoint_map[service_name] = endpoint
