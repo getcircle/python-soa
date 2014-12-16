@@ -10,9 +10,12 @@ from .transports import local as local_transport
 
 class Client(object):
 
-    def __init__(self, service_name):
+    def __init__(self, service_name, post_call_action_hook=None):
         self.service_name = service_name
         self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
+        self._post_call_action_hook = post_call_action_hook or (
+            lambda x, y: None
+        )
 
     def set_transport(self, transport):
         self.transport = transport
@@ -43,6 +46,7 @@ class Client(object):
         )
         action_response = service_response.actions[0]
         response = action_response.result.Extensions[extension]
+        self._post_call_action_hook(action_response, response)
         return action_response, response
 
 
