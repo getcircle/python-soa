@@ -28,6 +28,6 @@ setup(
     install_requires=requirements,
     setup_requires=setup_requirements,
     scripts=[
-        'service/commands/shell',
+        'service/commands/soa-shell',
     ]
 )
