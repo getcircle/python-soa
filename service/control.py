@@ -20,6 +20,16 @@ class Client(object):
     def set_transport(self, transport):
         self.transport = transport
 
+    def copy_params_to_protobuf(self, protobuf, params):
+        for key, value in params.iteritems():
+            if hasattr(protobuf, key):
+                if isinstance(value, dict):
+                    self.copy_params_to_protobuf(getattr(protobuf, key), value)
+                else:
+                    setattr(protobuf, key, value)
+            else:
+                raise exceptions.RogueParameter(key)
+
     def call_action(self, action_name, **params):
         service_request = soa_pb2.ServiceRequest()
         service_request.control.service = self.service_name
@@ -33,11 +43,7 @@ class Client(object):
             action_name,
         )
         request = action_request.params.Extensions[extension]
-        for key, value in params.iteritems():
-            if hasattr(request, key):
-                setattr(request, key, value)
-            else:
-                raise exceptions.RogueParameter(key)
+        self.copy_params_to_protobuf(request, params)
 
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(

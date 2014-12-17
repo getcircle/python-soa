@@ -2,6 +2,12 @@ package another_action;
 
 message Request {
     optional string test = 1;
+
+    message Nested {
+        optional string echo = 1;
+    }
+
+    optional Nested nested = 2;
 }
 
 message Response {

@@ -34,7 +34,7 @@ class TestValidators(base.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_failed_type_validator_results_in_error(self):
-        action_response = self.client.call_action(
+        action_response, _ = self.client.call_action(
             'simple_action',
             user_id='12321313',
         )
@@ -47,7 +47,7 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_field_validator_results_in_error(self):
-        action_response = self.client.call_action(
+        action_response, _ = self.client.call_action(
             'simple_action',
             echo='boo',
         )
@@ -60,13 +60,13 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'Must be excited')
 
     def test_is_uuid4_validates_uuid(self):
-        action_response = self.client.call_action(
+        action_response, _ = self.client.call_action(
             'simple_action',
             user_id='123123123',
         )
         self.assertFalse(action_response.result.success)
 
-        action_response = self.client.call_action(
+        action_response, _ = self.client.call_action(
             'simple_action',
             user_id=uuid.uuid4().hex,
         )
