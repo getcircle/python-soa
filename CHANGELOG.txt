@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2014-12-16 - 0.1.0
+------------------
+
+Support nested params being passed to call_action
+
 2014-12-16 - 0.0.1
 ------------------
 
