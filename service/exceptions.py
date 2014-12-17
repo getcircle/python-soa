@@ -21,6 +21,16 @@ class RogueParameter(Exception):
         super(RogueParameter, self).__init__(message, **kwargs)
 
 
+class InvalidParameterValue(Exception):
+
+    def __init__(self, parameter, value, **kwargs):
+        message = 'Parameter: "%s" rejected "%s" as a value' % (
+            parameter,
+            value,
+        )
+        super(InvalidParameterValue, self).__init__(message, **kwargs)
+
+
 class InvalidServiceRequest(Exception):
 
     def __init__(self, request, **kwargs):

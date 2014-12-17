@@ -20,13 +20,25 @@ class Client(object):
     def set_transport(self, transport):
         self.transport = transport
 
-    def copy_params_to_protobuf(self, protobuf, params):
+    def _set_value_for_protobuf(self, protobuf, key, value):
+        try:
+            setattr(protobuf, key, value)
+        except AttributeError:
+            try:
+                getattr(protobuf, key).CopyFrom(value)
+            except TypeError:
+                raise exceptions.InvalidParameterValue(key, value)
+
+    def _copy_params_to_protobuf(self, protobuf, params):
         for key, value in params.iteritems():
             if hasattr(protobuf, key):
                 if isinstance(value, dict):
-                    self.copy_params_to_protobuf(getattr(protobuf, key), value)
+                    self._copy_params_to_protobuf(
+                        getattr(protobuf, key),
+                        value,
+                    )
                 else:
-                    setattr(protobuf, key, value)
+                    self._set_value_for_protobuf(protobuf, key, value)
             else:
                 raise exceptions.RogueParameter(key)
 
@@ -43,7 +55,7 @@ class Client(object):
             action_name,
         )
         request = action_request.params.Extensions[extension]
-        self.copy_params_to_protobuf(request, params)
+        self._copy_params_to_protobuf(request, params)
 
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(
