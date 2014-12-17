@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2014-12-16 - 0.1.1
+------------------
+
+Add helper to output protobuf as a dict to the shell
+Support passing a protobuf object as a parameter
+
 2014-12-16 - 0.1.0
 ------------------
 
