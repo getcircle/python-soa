@@ -7,6 +7,7 @@ import service
 
 requirements = [
 # TODO package requirements
+    'protobuf-to-dict==0.1.0',
 ]
 
 setup_requirements = [

@@ -1,4 +1,5 @@
 from importlib import import_module
+from protobuf_to_dict import protobuf_to_dict
 
 from . import control
 from .utils import start_python_console
@@ -38,6 +39,7 @@ class Shell(object):
         self.vars['get_client_for_service'] = self.get_client_for_service
         self.vars['action_response'] = action_response
         self.vars['response'] = response
+        self.vars['protobuf_to_dict'] = protobuf_to_dict
 
     def use_default_registry(self):
         request_registry = import_module('protobufs.request_registry_pb2')
@@ -71,6 +73,7 @@ class Shell(object):
         self.p('  shelp()                                   Shell help (print this help)')
         self.p('  get_client_for_service(<service_name>)    Return a dev client for the given service')
         self.p('  use_default_registry()                    Use the default registry (requires "protobufs" be installed)')
+        self.p('  protobuf_to_dict(<protobuf>)              Output dictionary representation of the protobuf')
 
     def p(self, line=''):
         print("[soa] %s" % line)
