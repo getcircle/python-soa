@@ -1,0 +1,3 @@
+[submodule "service/protobufs/common"]
+	path = service/protobufs/common
+	url = git@github.com:getcircle/protobuf-soa.git
