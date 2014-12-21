@@ -150,7 +150,7 @@ def ensure_init_exists():
                 open(path, 'a').close()
 
 
-@task(aliases=('csoaproto',), post=[ensure_init_exists])
+@task(aliases=('compile',), post=[ensure_init_exists])
 def compile_soa_proto():
     with base_directory():
         run(

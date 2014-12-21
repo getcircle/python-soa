@@ -32,6 +32,6 @@ setup(
         'service/commands/soa-shell',
     ],
     dependency_links=[
-        'https://github.com/getcircle/protobuf-soa/tarball/master#egg=protobuf-soa',
+        'git+ssh://git@github.com/getcircle/protobuf-soa.git#egg=protobuf-soa-0.1.1',
     ],
 )

@@ -21,7 +21,7 @@ import service.protobufs.tests.simple_service.simple_action_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/response_registry.proto',
   package='tests.response.registry',
-  serialized_pb=_b('\n/service/protobufs/tests/response_registry.proto\x12\x17tests.response.registry\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\xa7\x01\n\rSimpleService2K\n\x0e\x61nother_action\x12\x19.soa.ActionResponseResult\x18\x65 \x01(\x0b\x32\x18.another_action.Response2I\n\rsimple_action\x12\x19.soa.ActionResponseResult\x18\x66 \x01(\x0b\x32\x17.simple_action.Response')
+  serialized_pb=_b('\n/service/protobufs/tests/response_registry.proto\x12\x17tests.response.registry\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\xb0\x01\n\x16SimpleServiceResponses2K\n\x0e\x61nother_action\x12\x19.soa.ActionResponseResult\x18\x65 \x01(\x0b\x32\x18.another_action.Response2I\n\rsimple_action\x12\x19.soa.ActionResponseResult\x18\x66 \x01(\x0b\x32\x17.simple_action.Response')
   ,
   dependencies=[service_protobufs.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -29,9 +29,9 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
-_SIMPLESERVICE = _descriptor.Descriptor(
-  name='SimpleService',
-  full_name='tests.response.registry.SimpleService',
+_SIMPLESERVICERESPONSES = _descriptor.Descriptor(
+  name='SimpleServiceResponses',
+  full_name='tests.response.registry.SimpleServiceResponses',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -39,14 +39,14 @@ _SIMPLESERVICE = _descriptor.Descriptor(
   ],
   extensions=[
     _descriptor.FieldDescriptor(
-      name='another_action', full_name='tests.response.registry.SimpleService.another_action', index=0,
+      name='another_action', full_name='tests.response.registry.SimpleServiceResponses.another_action', index=0,
       number=101, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='simple_action', full_name='tests.response.registry.SimpleService.simple_action', index=1,
+      name='simple_action', full_name='tests.response.registry.SimpleServiceResponses.simple_action', index=1,
       number=102, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -62,21 +62,21 @@ _SIMPLESERVICE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=227,
-  serialized_end=394,
+  serialized_end=403,
 )
 
-DESCRIPTOR.message_types_by_name['SimpleService'] = _SIMPLESERVICE
+DESCRIPTOR.message_types_by_name['SimpleServiceResponses'] = _SIMPLESERVICERESPONSES
 
-SimpleService = _reflection.GeneratedProtocolMessageType('SimpleService', (_message.Message,), dict(
-  DESCRIPTOR = _SIMPLESERVICE,
+SimpleServiceResponses = _reflection.GeneratedProtocolMessageType('SimpleServiceResponses', (_message.Message,), dict(
+  DESCRIPTOR = _SIMPLESERVICERESPONSES,
   __module__ = 'service.protobufs.tests.response_registry_pb2'
-  # @@protoc_insertion_point(class_scope:tests.response.registry.SimpleService)
+  # @@protoc_insertion_point(class_scope:tests.response.registry.SimpleServiceResponses)
   ))
-_sym_db.RegisterMessage(SimpleService)
+_sym_db.RegisterMessage(SimpleServiceResponses)
 
-_SIMPLESERVICE.extensions_by_name['another_action'].message_type = service.protobufs.tests.simple_service.another_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['another_action'])
-_SIMPLESERVICE.extensions_by_name['simple_action'].message_type = service.protobufs.tests.simple_service.simple_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['simple_action'])
+_SIMPLESERVICERESPONSES.extensions_by_name['another_action'].message_type = service.protobufs.tests.simple_service.another_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICERESPONSES.extensions_by_name['another_action'])
+_SIMPLESERVICERESPONSES.extensions_by_name['simple_action'].message_type = service.protobufs.tests.simple_service.simple_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICERESPONSES.extensions_by_name['simple_action'])
 
 # @@protoc_insertion_point(module_scope)

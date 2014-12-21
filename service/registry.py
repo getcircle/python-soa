@@ -8,11 +8,12 @@ from . import (
 
 class ProtobufRegistry(object):
 
-    def __init__(self, registry_path):
+    def __init__(self, suffix, registry_path):
+        self._suffix = suffix
         self._registry_path = registry_path
 
     def get_registry_service_name(self, service_name):
-        return '%sService' % (service_name.title(),)
+        return '%sService%s' % (service_name.title(), self._suffix)
 
     @property
     def registry(self):
@@ -49,5 +50,11 @@ class ProtobufRegistry(object):
             raise exceptions.UnrecognizedAction(action_name)
 
 
-request_registry = ProtobufRegistry(settings.PROTOBUF_REQUEST_REGISTRY)
-response_registry = ProtobufRegistry(settings.PROTOBUF_RESPONSE_REGISTRY)
+request_registry = ProtobufRegistry(
+    'Requests',
+    settings.PROTOBUF_REQUEST_REGISTRY,
+)
+response_registry = ProtobufRegistry(
+    'Responses',
+    settings.PROTOBUF_RESPONSE_REGISTRY,
+)
