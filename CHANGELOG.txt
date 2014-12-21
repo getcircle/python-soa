@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2014-12-20 - 0.1.2
+------------------
+
+Pull out the soa.proto to its own repo. This lets us share it between the
+various clients and the protobuf-registry.
+
 2014-12-16 - 0.1.1
 ------------------
 
