@@ -154,7 +154,7 @@ def ensure_init_exists():
 def compile_soa_proto():
     with base_directory():
         run(
-            "find . -type f -name '*.proto'"
+            "find service -type f -name '*.proto'"
             " | xargs protoc --proto_path . --python_out ."
         )
 

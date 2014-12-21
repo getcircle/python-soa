@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import service.protobufs.common.soa_pb2
+import service_protobufs.soa_pb2
 import service.protobufs.tests.simple_service.another_action_pb2
 import service.protobufs.tests.simple_service.simple_action_pb2
 
@@ -21,9 +21,9 @@ import service.protobufs.tests.simple_service.simple_action_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/response_registry.proto',
   package='tests.response.registry',
-  serialized_pb=_b('\n/service/protobufs/tests/response_registry.proto\x12\x17tests.response.registry\x1a\"service/protobufs/common/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\xa7\x01\n\rSimpleService2K\n\x0e\x61nother_action\x12\x19.soa.ActionResponseResult\x18\x65 \x01(\x0b\x32\x18.another_action.Response2I\n\rsimple_action\x12\x19.soa.ActionResponseResult\x18\x66 \x01(\x0b\x32\x17.simple_action.Response')
+  serialized_pb=_b('\n/service/protobufs/tests/response_registry.proto\x12\x17tests.response.registry\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\xa7\x01\n\rSimpleService2K\n\x0e\x61nother_action\x12\x19.soa.ActionResponseResult\x18\x65 \x01(\x0b\x32\x18.another_action.Response2I\n\rsimple_action\x12\x19.soa.ActionResponseResult\x18\x66 \x01(\x0b\x32\x17.simple_action.Response')
   ,
-  dependencies=[service.protobufs.common.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,])
+  dependencies=[service_protobufs.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -61,8 +61,8 @@ _SIMPLESERVICE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=234,
-  serialized_end=401,
+  serialized_start=227,
+  serialized_end=394,
 )
 
 DESCRIPTOR.message_types_by_name['SimpleService'] = _SIMPLESERVICE
@@ -75,8 +75,8 @@ SimpleService = _reflection.GeneratedProtocolMessageType('SimpleService', (_mess
 _sym_db.RegisterMessage(SimpleService)
 
 _SIMPLESERVICE.extensions_by_name['another_action'].message_type = service.protobufs.tests.simple_service.another_action_pb2._RESPONSE
-service.protobufs.common.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['another_action'])
+service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['another_action'])
 _SIMPLESERVICE.extensions_by_name['simple_action'].message_type = service.protobufs.tests.simple_service.simple_action_pb2._RESPONSE
-service.protobufs.common.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['simple_action'])
+service_protobufs.soa_pb2.ActionResponseResult.RegisterExtension(_SIMPLESERVICE.extensions_by_name['simple_action'])
 
 # @@protoc_insertion_point(module_scope)

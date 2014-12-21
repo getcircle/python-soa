@@ -1,6 +1,6 @@
 package tests.response.registry;
 
-import "service/protobufs/common/soa.proto";
+import "service_protobufs/soa.proto";
 
 import "service/protobufs/tests/simple_service/another_action.proto";
 import "service/protobufs/tests/simple_service/simple_action.proto";

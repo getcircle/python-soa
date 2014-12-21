@@ -1,10 +1,11 @@
+from service_protobufs import soa_pb2
+
 from . import (
     exceptions,
     registry,
     settings,
     utils,
 )
-from .protobufs.common import soa_pb2
 from .transports import local as local_transport
 
 

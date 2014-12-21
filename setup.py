@@ -6,7 +6,7 @@ from setuptools import (
 import service
 
 requirements = [
-# TODO package requirements
+    'protobuf-soa==0.0.1',
     'protobuf-to-dict==0.1.0',
 ]
 
@@ -30,5 +30,8 @@ setup(
     setup_requires=setup_requirements,
     scripts=[
         'service/commands/soa-shell',
-    ]
+    ],
+    dependency_links=[
+        'https://github.com/getcircle/protobuf-soa/tarball/master#egg=protobuf-soa',
+    ],
 )
