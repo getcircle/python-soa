@@ -17,7 +17,7 @@ setup_requirements = [
 ]
 
 setup(
-    name='python-soa-protobuf',
+    name='python-soa',
     version=service.__version__,
     description='service layer using protobufs',
     packages=find_packages(exclude=[
