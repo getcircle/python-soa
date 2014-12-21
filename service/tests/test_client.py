@@ -12,12 +12,16 @@ class SampleServer(service.control.Server):
     }
 
 
+class AuthExemptServer(SampleServer):
+    auth_exempt_actions = ('simple_action',)
+
+
 class TestClient(base.TestCase):
 
     def setUp(self):
         super(TestClient, self).setUp()
         service.control.localize_server(SampleServer)
-        self.client = service.control.Client('simple')
+        self.client = service.control.Client('simple', token='test-token')
 
     def tearDown(self):
         service.control.unlocalize_server(SampleServer)
@@ -52,3 +56,31 @@ class TestClient(base.TestCase):
             test='test',
             nested={'echo': 'echo!'},
         )
+
+
+class TestAuthExemptActions(base.TestCase):
+
+    def setUp(self):
+        super(TestAuthExemptActions, self).setUp()
+        service.control.localize_server(AuthExemptServer)
+        self.client = service.control.Client('simple')
+
+    def tearDown(self):
+        service.control.unlocalize_server(AuthExemptServer)
+
+    def test_client_call_auth_exempt_action(self):
+        action_response, response = self.client.call_action(
+            'simple_action',
+            echo='echo!',
+        )
+
+        self.assertTrue(action_response.result.success)
+        self.assertEqual(response.answer, 'echo!')
+
+    def test_client_non_auth_exempt_action(self):
+        action_response, response = self.client.call_action(
+            'another_action',
+            test='test',
+        )
+        self.assertFalse(action_response.result.success)
+        self.assertIn('FORBIDDEN', action_response.result.errors)

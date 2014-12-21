@@ -28,7 +28,7 @@ class TestValidators(base.TestCase):
     def setUp(self):
         super(TestValidators, self).setUp()
         service.control.localize_server(SampleServer)
-        self.client = service.control.Client('simple')
+        self.client = service.control.Client('simple', token='test-token')
 
     def tearDown(self):
         service.control.unlocalize_server(SampleServer)

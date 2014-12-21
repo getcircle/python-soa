@@ -11,8 +11,9 @@ from .transports import local as local_transport
 
 class Client(object):
 
-    def __init__(self, service_name, post_call_action_hook=None):
+    def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
+        self.token = token
         self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
         self._post_call_action_hook = post_call_action_hook or (
             lambda x, y: None
@@ -46,6 +47,8 @@ class Client(object):
     def call_action(self, action_name, **params):
         service_request = soa_pb2.ServiceRequest()
         service_request.control.service = self.service_name
+        if self.token is not None:
+            service_request.control.token = self.token
 
         action_request = service_request.actions.add()
         action_request.control.service = self.service_name
@@ -71,8 +74,9 @@ class Client(object):
 
 class Server(object):
 
-    service_name = None
     actions = {}
+    service_name = None
+    auth_exempt_actions = tuple()
 
     def handle_request(self, serialized_request):
         service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
@@ -92,6 +96,18 @@ class Server(object):
                 action_request,
                 action_response,
             )
+            if (
+                not service_request.control.token and
+                action_request.control.action not in self.auth_exempt_actions
+            ):
+                action.note_error(
+                    'FORBIDDEN',
+                    (
+                        'FORBIDDEN',
+                        'authentication token must be provided for action',
+                    ),
+                )
+
             action.execute()
             if not action_response.result.errors:
                 action_response.result.success = True
