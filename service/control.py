@@ -96,6 +96,7 @@ class Server(object):
                 action_request,
                 action_response,
             )
+            # XXX verify this token is valid
             if (
                 not service_request.control.token and
                 action_request.control.action not in self.auth_exempt_actions
