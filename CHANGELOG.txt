@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2014-12-23 - 0.4.0
+------------------
+
+Don't execute the action if there was an authentication error. We don't even
+want the validation to be called since this could expose information about the
+endpoint.
+
 2014-12-20 - 0.1.2
 ------------------
 
