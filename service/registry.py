@@ -18,7 +18,7 @@ class ProtobufRegistry(object):
     @property
     def registry(self):
         if not self.has_registry():
-            self.load_registry(self._registry_path)
+            self.set_registry(self._registry_path)
         return self._protobuf_registry
 
     def has_registry(self):
