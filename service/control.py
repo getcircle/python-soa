@@ -26,9 +26,19 @@ class Client(object):
         try:
             setattr(protobuf, key, value)
         except AttributeError:
-            try:
-                getattr(protobuf, key).CopyFrom(value)
-            except TypeError:
+            valid = False
+            container = getattr(protobuf, key)
+            if isinstance(value, list) and hasattr(container, 'extend'):
+                container.extend(value)
+                valid = True
+            else:
+                try:
+                    container.CopyFrom(value)
+                    valid = True
+                except TypeError:
+                    pass
+
+            if not valid:
                 raise exceptions.InvalidParameterValue(key, value)
 
     def _copy_params_to_protobuf(self, protobuf, params):
