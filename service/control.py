@@ -40,7 +40,8 @@ class Client(object):
                         value,
                     )
                 else:
-                    self._set_value_for_protobuf(protobuf, key, value)
+                    if value is not None:
+                        self._set_value_for_protobuf(protobuf, key, value)
             else:
                 raise exceptions.RogueParameter(key)
 
