@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2014-12-23 - 0.4.1
+------------------
+
+Store a reference to the token an action was called with on the aciton.
+
 2014-12-23 - 0.4.0
 ------------------
 
