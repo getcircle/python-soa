@@ -109,7 +109,9 @@ class Server(object):
                     ),
                 )
 
-            action.execute()
+            if not action.is_error():
+                action.execute()
+
             if not action_response.result.errors:
                 action_response.result.success = True
 
