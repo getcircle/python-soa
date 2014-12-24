@@ -55,10 +55,20 @@ class Action(object):
             if not validator(value):
                 self.note_field_error(field_name, error_message)
 
+    def add_prefix(self, prefix, name):
+        return prefix + '.' + name if prefix else name
+
+    def validate_message(self, message, prefix=''):
+        for field, value in message.ListFields():
+            field_name = self.add_prefix(prefix, field.name)
+            self.check_type_validators(field_name, value)
+            if not self.is_error():
+                self.check_field_validators(field_name, value)
+            if hasattr(value, 'ListFields'):
+                self.validate_message(value, prefix=field_name)
+
     def validate(self, *args, **kwargs):
-        for field, value in self.request.ListFields():
-            self.check_type_validators(field.name, value)
-            self.check_field_validators(field.name, value)
+        self.validate_message(self.request)
 
     def execute(self, *args, **kwargs):
         self.validate()
