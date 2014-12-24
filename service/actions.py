@@ -6,8 +6,9 @@ class Action(object):
     type_validators = None
     field_validators = None
 
-    def __init__(self, service_name, action_request, action_response):
-        self.service_name = service_name
+    def __init__(self, service_control, action_request, action_response):
+        self.token = service_control.token
+        self.service_name = service_control.service
         self._action_request = action_request
         self._action_response = action_response
         self._errors = action_response.result.errors
