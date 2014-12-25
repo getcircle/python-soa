@@ -9,6 +9,29 @@ from . import (
 from .transports import local as local_transport
 
 
+class Response(object):
+
+    def __init__(self, action_response, extension_response):
+        self._action_response = action_response
+        self._extension_response = extension_response
+
+    @property
+    def success(self):
+        return self._action_response.result.success
+
+    @property
+    def errors(self):
+        return self._action_response.result.errors
+
+    @property
+    def error_details(self):
+        return self._action_response.result.error_details
+
+    @property
+    def result(self):
+        return self._extension_response
+
+
 class Client(object):
 
     def __init__(self, service_name, post_call_action_hook=None, token=None):
@@ -78,9 +101,9 @@ class Client(object):
             action_name,
         )
         action_response = service_response.actions[0]
-        response = action_response.result.Extensions[extension]
-        self._post_call_action_hook(action_response, response)
-        return action_response, response
+        extension_response = action_response.result.Extensions[extension]
+        self._post_call_action_hook(action_response, extension_response)
+        return Response(action_response, extension_response)
 
 
 class Server(object):
