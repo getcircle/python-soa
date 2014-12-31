@@ -29,7 +29,7 @@ class Shell(object):
         self.print_help()
         start_python_console(self.vars)
 
-    def populate_vars(self, action_response=None, response=None):
+    def populate_vars(self, response=None):
         self.vars['Client'] = control.Client
         self.vars['HttpsTransport'] = https.HttpsTransport
         self.vars['local_transport'] = local.instance
@@ -37,7 +37,6 @@ class Shell(object):
         self.vars['use_default_registry'] = self.use_default_registry
         self.vars['use_dev_endpoints'] = self.use_dev_endpoints
         self.vars['get_client_for_service'] = self.get_client_for_service
-        self.vars['action_response'] = action_response
         self.vars['response'] = response
         self.vars['protobuf_to_dict'] = protobuf_to_dict
 
@@ -48,10 +47,11 @@ class Shell(object):
         control.set_protobufs_request_registry(request_registry)
         control.set_protobufs_response_registry(response_registry)
 
-    def get_client_for_service(self, service_name):
+    def get_client_for_service(self, service_name, token='test-token'):
         client = control.Client(
             service_name,
             post_call_action_hook=self.populate_vars,
+            token=token,
         )
         self.use_default_registry()
         self.use_dev_endpoints(client)

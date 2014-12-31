@@ -39,7 +39,7 @@ class Client(object):
         self.token = token
         self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
         self._post_call_action_hook = post_call_action_hook or (
-            lambda x, y: None
+            lambda x: None
         )
 
     def set_transport(self, transport):
@@ -102,8 +102,9 @@ class Client(object):
         )
         action_response = service_response.actions[0]
         extension_response = action_response.result.Extensions[extension]
-        self._post_call_action_hook(action_response, extension_response)
-        return Response(action_response, extension_response)
+        response_wrapper = Response(action_response, extension_response)
+        self._post_call_action_hook(response_wrapper)
+        return response_wrapper
 
 
 class Server(object):
