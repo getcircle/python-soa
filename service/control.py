@@ -1,3 +1,4 @@
+from protobuf_to_dict import dict_to_protobuf
 from service_protobufs import soa_pb2
 
 from . import (
@@ -45,6 +46,11 @@ class Client(object):
     def set_transport(self, transport):
         self.transport = transport
 
+    def _set_protobuf_with_list_of_dicts(self, container, values):
+        for value in values:
+            sub_container = container.add()
+            dict_to_protobuf(value, sub_container)
+
     def _set_value_for_protobuf(self, protobuf, key, value):
         try:
             setattr(protobuf, key, value)
@@ -52,8 +58,13 @@ class Client(object):
             valid = False
             container = getattr(protobuf, key)
             if isinstance(value, list) and hasattr(container, 'extend'):
-                container.extend(value)
-                valid = True
+                try:
+                    container.extend(value)
+                    valid = True
+                except TypeError:
+                    if all(map(lambda x: isinstance(x, dict), value)):
+                        self._set_protobuf_with_list_of_dicts(container, value)
+                        valid = True
             else:
                 try:
                     container.CopyFrom(value)
