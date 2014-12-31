@@ -10,10 +10,16 @@ class HttpsTransport(BaseTransport):
 
     def process_request(self, service_request, serialized_request):
         endpoint = self.endpoint_map[service_request.control.service]
+        headers = {'content-type': 'application/x-protobuf'}
+        if service_request.control.token:
+            headers['authorization'] = 'Token %s' % (
+                service_request.control.token,
+            )
+
         response = requests.post(
             endpoint,
             data=serialized_request,
-            headers={'content-type': 'application/x-protobuf'},
+            headers=headers,
             verify=False,
         )
         # TODO: build an error response here if things go to shit
