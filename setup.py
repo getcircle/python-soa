@@ -10,12 +10,6 @@ requirements = [
     'protobuf-to-dict==0.1.0',
 ]
 
-setup_requirements = [
-    'nose>=1.0',
-    'coverage>=1.0',
-    'mock==1.0.1',
-]
-
 setup(
     name='python-soa',
     version=service.__version__,
@@ -27,7 +21,6 @@ setup(
         "tests",
     ]),
     install_requires=requirements,
-    setup_requires=setup_requirements,
     scripts=[
         'service/commands/soa-shell',
     ],

@@ -42,7 +42,7 @@ def test(failfast=False):
     with base_directory():
         if failfast:
             NOSE_ARGS.append('-x')
-        command = 'python setup.py nosetests %s' % (' '.join(NOSE_ARGS),)
+        command = 'nosetests %s' % (' '.join(NOSE_ARGS),)
         print command
         run(command, pty=True)
 
