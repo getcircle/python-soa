@@ -38,7 +38,10 @@ class Client(object):
     def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
         self.token = token
-        self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
+        if isinstance(settings.DEFAULT_TRANSPORT, basestring):
+            self.transport = utils.import_string(settings.DEFAULT_TRANSPORT)
+        else:
+            self.transport = settings.DEFAULT_TRANSPORT
         self._post_call_action_hook = post_call_action_hook or (
             lambda x: None
         )
