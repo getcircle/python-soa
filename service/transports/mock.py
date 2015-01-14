@@ -26,9 +26,16 @@ class MockTransport(BaseTransport):
             self._get_params_hash(params),
         )
 
-    def register_mock_response(self, service_name, action_name, mock_response, **params):
+    def register_mock_response(
+            self,
+            service_name,
+            action_name,
+            mock_response,
+            is_action_response=False,
+            **params
+        ):
         mock_key = self._get_mock_key(service_name, action_name, params)
-        self.mock_responses[mock_key] = mock_response
+        self.mock_responses[mock_key] = (mock_response, is_action_response)
 
     def unregister_mock_response(self, service_name, action_name, **params):
         mock_key = self._get_mock_key(service_name, action_name, params)
@@ -51,19 +58,27 @@ class MockTransport(BaseTransport):
         service_response = soa_pb2.ServiceResponse()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
-            mock_response = self.get_mock_response(action_request)
+            mock_response, is_action_response = self.get_mock_response(action_request)
             action_response = service_response.actions.add()
-            action_response.control.CopyFrom(action_request.control)
-            action_response.result.success = True
-            result = control.get_response_extension(action_response)
-            result.CopyFrom(mock_response)
+            if is_action_response:
+                action_response.CopyFrom(mock_response)
+            else:
+                action_response.control.CopyFrom(action_request.control)
+                action_response.result.success = True
+                result = control.get_response_extension(action_response)
+                result.CopyFrom(mock_response)
         return service_response.SerializeToString()
 
 
-def get_mockable_response(service_name, action_name):
+def get_mockable_action_response(service_name, action_name):
     action_response = soa_pb2.ActionResponse()
     action_response.control.service = service_name
     action_response.control.action = action_name
+    return action_response
+
+
+def get_mockable_response(service_name, action_name):
+    action_response = get_mockable_action_response(service_name, action_name)
     return control.get_response_extension(action_response)
 
 instance = MockTransport()
