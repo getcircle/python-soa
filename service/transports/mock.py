@@ -2,6 +2,7 @@ import json
 from md5 import md5
 import re
 
+from google.protobuf import message
 from protobuf_to_dict import protobuf_to_dict
 from service_protobufs import soa_pb2
 
@@ -18,6 +19,12 @@ class MockTransport(BaseTransport):
 
     def _get_params_hash(self, params):
         ordered = sorted(params.items(), key=lambda x: x[0])
+        serializable = []
+        for key, value in ordered:
+            if isinstance(value, message.Message):
+                serializable.append((key, protobuf_to_dict(value)))
+            else:
+                serializable.append((key, value))
         result = md5(json.dumps(ordered)).hexdigest()
         return result
 
