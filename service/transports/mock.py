@@ -15,7 +15,7 @@ class MockTransport(BaseTransport):
     def __init__(self, *args, **kwargs):
         super(MockTransport, self).__init__(*args, **kwargs)
         self.mock_responses = {}
-        self.mock_regex_lookups = set()
+        self.mock_regex_lookups = {}
 
     def _get_params_hash(self, params):
         ordered = sorted(params.items(), key=lambda x: x[0])
@@ -47,13 +47,13 @@ class MockTransport(BaseTransport):
         mock_key = self._get_mock_key(service_name, action_name, params)
         self.mock_responses[mock_key] = (mock_response, is_action_response)
         if mock_regex_lookup:
-            self.mock_regex_lookups.add((mock_regex_lookup, mock_response))
+            self.mock_regex_lookups[mock_regex_lookup] = mock_response
 
     def unregister_mock_response(self, service_name, action_name, mock_regex_lookup, **params):
         mock_key = self._get_mock_key(service_name, action_name, params)
-        response = self.mock_responses.pop(mock_key, None)
-        if mock_regex_lookup and response:
-            self.mock_regex_lookups.remove((mock_regex_lookup, response))
+        self.mock_responses.pop(mock_key, None)
+        if mock_regex_lookup:
+            self.mock_regex_lookups.pop(mock_regex_lookup, None)
 
     def get_mock_response(self, action_request):
         request = control.get_request_extension(action_request)
@@ -66,7 +66,7 @@ class MockTransport(BaseTransport):
         try:
             return self.mock_responses[mock_key]
         except KeyError:
-            for regex, mock_response in self.mock_regex_lookups:
+            for regex, mock_response in self.mock_regex_lookups.iteritems():
                 if re.match(regex, mock_key):
                     return mock_response
             raise Exception('Unrecognized mock request: %s' % (mock_key,))
