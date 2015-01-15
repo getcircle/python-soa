@@ -60,7 +60,7 @@ class Client(object):
         except AttributeError:
             valid = False
             container = getattr(protobuf, key)
-            if isinstance(value, list) and hasattr(container, 'extend'):
+            if hasattr(value, 'extend') and hasattr(container, 'extend'):
                 try:
                     container.extend(value)
                     valid = True
