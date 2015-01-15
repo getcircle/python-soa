@@ -1,5 +1,6 @@
 import json
 from md5 import md5
+import re
 
 from protobuf_to_dict import protobuf_to_dict
 from service_protobufs import soa_pb2
@@ -59,7 +60,7 @@ class MockTransport(BaseTransport):
             return self.mock_responses[mock_key]
         except KeyError:
             for regex, mock_response in self.mock_regex_lookups:
-                if regex.match(mock_key):
+                if re.match(regex, mock_key):
                     return mock_response
             raise Exception('Unrecognized mock request: %s' % (mock_key,))
 
