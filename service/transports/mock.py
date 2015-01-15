@@ -47,7 +47,7 @@ class MockTransport(BaseTransport):
         mock_key = self._get_mock_key(service_name, action_name, params)
         self.mock_responses[mock_key] = (mock_response, is_action_response)
         if mock_regex_lookup:
-            self.mock_regex_lookups[mock_regex_lookup] = mock_response
+            self.mock_regex_lookups[mock_regex_lookup] = (mock_response, is_action_response)
 
     def unregister_mock_response(self, service_name, action_name, mock_regex_lookup, **params):
         mock_key = self._get_mock_key(service_name, action_name, params)
