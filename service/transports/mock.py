@@ -25,7 +25,7 @@ class MockTransport(BaseTransport):
                 serializable.append((key, protobuf_to_dict(value)))
             else:
                 serializable.append((key, value))
-        result = md5(json.dumps(ordered)).hexdigest()
+        result = md5(json.dumps(serializable)).hexdigest()
         return result
 
     def _get_mock_key(self, service_name, action_name, params):
