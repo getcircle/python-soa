@@ -1,4 +1,6 @@
 import service.control
+from . import settings
+from .paginator import Paginator
 
 
 class Action(object):
@@ -14,6 +16,7 @@ class Action(object):
         self._errors = action_response.result.errors
         self._error_details = action_response.result.error_details
 
+        self.control = self._action_response.control
         self.request = service.control.get_request_extension(action_request)
         self.response = service.control.get_response_extension(action_response)
         if self.field_validators is None:
@@ -58,6 +61,10 @@ class Action(object):
     def add_prefix(self, prefix, name):
         return prefix + '.' + name if prefix else name
 
+    def validate_control(self):
+        if self.control.paginator.page_size > settings.MAX_PAGE_SIZE:
+            self.note_field_error('paginator.page_size', 'OVER_MAXIMUM')
+
     def validate_message(self, message, prefix=''):
         for field, value in message.ListFields():
             field_name = self.add_prefix(prefix, field.name)
@@ -68,6 +75,7 @@ class Action(object):
                 self.validate_message(value, prefix=field_name)
 
     def validate(self, *args, **kwargs):
+        self.validate_control()
         self.validate_message(self.request)
 
     def execute(self, *args, **kwargs):
@@ -75,6 +83,20 @@ class Action(object):
         if not self.is_error():
             self.run(*args, **kwargs)
         self._action_response.result.success = not self.is_error()
+
+    def paginated_response(self, repeated_container, objects, transport_func):
+        paginator = Paginator(objects, self.control.paginator.page_size)
+        page = paginator.page(self.control.paginator.page)
+        for item in page.object_list:
+            transport_func(item, repeated_container)
+
+        self.control.paginator.count = paginator.count
+        self.control.paginator.total_pages = paginator.num_pages
+        if page.has_next():
+            self.control.paginator.next_page = page.next_page_number()
+
+        if page.has_previous():
+            self.control.paginator.previous_page = page.previous_page_number()
 
     def run(self, *args, **kwargs):
         raise NotImplementedError('Action must define `run` method')

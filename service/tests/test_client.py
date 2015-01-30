@@ -9,6 +9,7 @@ class SampleServer(service.control.Server):
     actions = {
         'simple_action': base.SimpleAction,
         'another_action': base.AnotherAction,
+        'paginated_action': base.PaginatedAction,
     }
 
 
@@ -57,6 +58,61 @@ class TestClient(base.TestCase):
             nested={'echo': 'echo!'},
         )
         self.assertTrue(response.success)
+
+    def test_client_call_action_pagination(self):
+        response = self.client.call_action('paginated_action', echo='echo', total=100)
+        self.assertTrue(response.success)
+        self.assertFalse(response.control.paginator.HasField('previous_page'))
+        self.assertEqual(response.control.paginator.next_page, 2)
+
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=100,
+            control={'paginator': {'page': response.control.paginator.next_page}},
+        )
+        self.assertTrue(response.success)
+        # given a default page size of 25, the first echo should be suffixed
+        # with "25" (0-24 being in the first page)
+        self.assertTrue(response.result.echos[0].endswith('25'))
+        self.assertEqual(response.control.paginator.count, 100)
+        self.assertEqual(response.control.paginator.total_pages, 4)
+
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=100,
+            control={'paginator': {'page': 4}},
+        )
+        self.assertTrue(response.success)
+        self.assertTrue(response.result.echos[0].endswith('75'))
+
+    def test_client_call_action_specify_page_size(self):
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=100,
+            control={'paginator': {'page_size': 3}},
+        )
+        self.assertTrue(response.success)
+        self.assertEqual(response.control.paginator.count, 100)
+        self.assertEqual(response.control.paginator.page_size, 3)
+        # total pages should equal total / page_size
+        self.assertEqual(response.control.paginator.total_pages, 34)
+        self.assertTrue(response.result.echos[0].endswith('0'))
+
+    def test_client_call_action_over_max_page(self):
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=100,
+            control={'paginator': {'page_size': 1000}},
+        )
+        self.assertFalse(response.success)
+        self.assertIn('FIELD_ERROR', response.errors)
+        field_error = response.error_details[0]
+        self.assertEqual('paginator.page_size', field_error.key)
+        self.assertEqual(field_error.detail, 'OVER_MAXIMUM')
 
 
 class TestAuthExemptActions(base.TestCase):

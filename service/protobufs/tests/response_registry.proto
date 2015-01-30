@@ -4,11 +4,13 @@ import "service_protobufs/soa.proto";
 
 import "service/protobufs/tests/simple_service/another_action.proto";
 import "service/protobufs/tests/simple_service/simple_action.proto";
+import "service/protobufs/tests/simple_service/paginated_action.proto";
 
 
 message SimpleServiceResponses {
     extend soa.ActionResponseResult {
         optional another_action.Response another_action = 101;
         optional simple_action.Response simple_action = 102;
+        optional paginated_action.Response paginated_action = 103;
     }
 }

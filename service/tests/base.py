@@ -17,6 +17,15 @@ class AnotherAction(Action):
         self.response.answer = self.request.test
 
 
+class PaginatedAction(Action):
+
+    def run(self, *args, **kwargs):
+        echos = []
+        for i in range(self.request.total):
+            echos.append('%s_%s' % (self.request.echo, i))
+        self.paginated_response(self.response.echos, echos, lambda x, y: y.append(x))
+
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):

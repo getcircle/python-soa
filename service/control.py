@@ -25,6 +25,10 @@ class Response(object):
         return self._action_response.result.errors
 
     @property
+    def control(self):
+        return self._action_response.control
+
+    @property
     def error_details(self):
         return self._action_response.result.error_details
 
@@ -78,13 +82,13 @@ class Client(object):
             if not valid:
                 raise exceptions.InvalidParameterValue(key, value)
 
-    def _copy_params_to_protobuf(self, protobuf, params):
+    def _copy_params_to_protobuf(self, params, protobuf):
         for key, value in params.iteritems():
             if hasattr(protobuf, key):
                 if isinstance(value, dict):
                     self._copy_params_to_protobuf(
-                        getattr(protobuf, key),
                         value,
+                        getattr(protobuf, key),
                     )
                 else:
                     if value is not None:
@@ -101,13 +105,16 @@ class Client(object):
         action_request = service_request.actions.add()
         action_request.control.service = self.service_name
         action_request.control.action = action_name
+        action_request.control.paginator.page_size = settings.DEFAULT_PAGE_SIZE
+        control_params = params.pop('control', {})
+        self._copy_params_to_protobuf(control_params, action_request.control)
 
         extension = registry.request_registry.get_extension(
             self.service_name,
             action_name,
         )
         request = action_request.params.Extensions[extension]
-        self._copy_params_to_protobuf(request, params)
+        self._copy_params_to_protobuf(params, request)
 
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(
