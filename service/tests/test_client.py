@@ -27,15 +27,15 @@ class TestClient(base.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_client_call_action(self):
-        action_response, response = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             echo='echo!',
             lurker='still here',
         )
 
-        self.assertTrue(action_response.result.success)
-        self.assertEqual(response.answer, 'echo!')
-        self.assertEqual(response.lurker, 'still here')
+        self.assertTrue(response.success)
+        self.assertEqual(response.result.answer, 'echo!')
+        self.assertEqual(response.result.lurker, 'still here')
 
     def test_client_call_action_unrecognized_service(self):
         client = service.control.Client('invalid')
@@ -51,11 +51,12 @@ class TestClient(base.TestCase):
             self.client.call_action('simple_action', invalid=True)
 
     def test_client_call_action_nested_params(self):
-        action_response, response = self.client.call_action(
+        response = self.client.call_action(
             'another_action',
             test='test',
             nested={'echo': 'echo!'},
         )
+        self.assertTrue(response.success)
 
 
 class TestAuthExemptActions(base.TestCase):
@@ -69,18 +70,18 @@ class TestAuthExemptActions(base.TestCase):
         service.control.unlocalize_server(AuthExemptServer)
 
     def test_client_call_auth_exempt_action(self):
-        action_response, response = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             echo='echo!',
         )
 
-        self.assertTrue(action_response.result.success)
-        self.assertEqual(response.answer, 'echo!')
+        self.assertTrue(response.success)
+        self.assertEqual(response.result.answer, 'echo!')
 
     def test_client_non_auth_exempt_action(self):
-        action_response, response = self.client.call_action(
+        response = self.client.call_action(
             'another_action',
             test='test',
         )
-        self.assertFalse(action_response.result.success)
-        self.assertIn('FORBIDDEN', action_response.result.errors)
+        self.assertFalse(response.success)
+        self.assertIn('FORBIDDEN', response.errors)

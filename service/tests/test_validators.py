@@ -34,40 +34,40 @@ class TestValidators(base.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_failed_type_validator_results_in_error(self):
-        action_response, _ = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             user_id='12321313',
         )
-        self.assertFalse(action_response.result.success)
-        self.assertIn('FIELD_ERROR', action_response.result.errors)
+        self.assertFalse(response.success)
+        self.assertIn('FIELD_ERROR', response.errors)
 
-        error_detail = action_response.result.error_details[0]
+        error_detail = response.error_details[0]
         self.assertEqual(error_detail.error, 'FIELD_ERROR')
         self.assertEqual(error_detail.key, 'user_id')
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_field_validator_results_in_error(self):
-        action_response, _ = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             echo='boo',
         )
-        self.assertFalse(action_response.result.success)
-        self.assertIn('FIELD_ERROR', action_response.result.errors)
+        self.assertFalse(response.success)
+        self.assertIn('FIELD_ERROR', response.errors)
 
-        error_detail = action_response.result.error_details[0]
+        error_detail = response.error_details[0]
         self.assertEqual(error_detail.error, 'FIELD_ERROR')
         self.assertEqual(error_detail.key, 'echo')
         self.assertEqual(error_detail.detail, 'Must be excited')
 
     def test_is_uuid4_validates_uuid(self):
-        action_response, _ = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             user_id='123123123',
         )
-        self.assertFalse(action_response.result.success)
+        self.assertFalse(response.success)
 
-        action_response, _ = self.client.call_action(
+        response = self.client.call_action(
             'simple_action',
             user_id=uuid.uuid4().hex,
         )
-        self.assertTrue(action_response.result.success)
+        self.assertTrue(response.success)
