@@ -62,6 +62,9 @@ class Action(object):
         return prefix + '.' + name if prefix else name
 
     def validate_control(self):
+        if not self.control.paginator.page_size:
+            self.control.paginator.page_size = settings.DEFAULT_PAGE_SIZE
+
         if self.control.paginator.page_size > settings.MAX_PAGE_SIZE:
             self.note_field_error('paginator.page_size', 'OVER_MAXIMUM')
 

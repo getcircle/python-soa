@@ -105,7 +105,6 @@ class Client(object):
         action_request = service_request.actions.add()
         action_request.control.service = self.service_name
         action_request.control.action = action_name
-        action_request.control.paginator.page_size = settings.DEFAULT_PAGE_SIZE
         control_params = params.pop('control', {})
         self._copy_params_to_protobuf(control_params, action_request.control)
 
