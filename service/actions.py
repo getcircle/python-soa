@@ -7,6 +7,12 @@ from .paginator import Paginator
 
 class Action(object):
 
+    class ActionError(Exception):
+        def __init__(self, error, details=None, *args, **kwargs):
+            self.error = error
+            self.details = details
+            super(Action.ActionError, self).__init__(*args, **kwargs)
+
     type_validators = None
     field_validators = None
     exception_to_error_map = None
@@ -91,6 +97,8 @@ class Action(object):
         if not self.is_error():
             try:
                 self.run(*args, **kwargs)
+            except Action.ActionError as e:
+                self.note_error(e.error, e.details)
             except Exception as e:
                 mapped_error = self.exception_to_error_map.get(e.__class__)
                 if mapped_error:

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/simple_service/exception_action.proto',
   package='exception_action',
-  serialized_pb=_b('\n=service/protobufs/tests/simple_service/exception_action.proto\x12\x10\x65xception_action\"(\n\x07Request\x12\r\n\x05\x66irst\x18\x01 \x01(\x08\x12\x0e\n\x06second\x18\x02 \x01(\x08\"\n\n\x08Response')
+  serialized_pb=_b('\n=service/protobufs/tests/simple_service/exception_action.proto\x12\x10\x65xception_action\"G\n\x07Request\x12\r\n\x05\x66irst\x18\x01 \x01(\x08\x12\x0e\n\x06second\x18\x02 \x01(\x08\x12\r\n\x05third\x18\x03 \x01(\x08\x12\x0e\n\x06\x66ourth\x18\x04 \x01(\x08\"\n\n\x08Response')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -46,6 +46,20 @@ _REQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='third', full_name='exception_action.Request.third', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='fourth', full_name='exception_action.Request.fourth', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -58,7 +72,7 @@ _REQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=83,
-  serialized_end=123,
+  serialized_end=154,
 )
 
 
@@ -80,8 +94,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=125,
-  serialized_end=135,
+  serialized_start=156,
+  serialized_end=166,
 )
 
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST

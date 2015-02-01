@@ -35,3 +35,14 @@ class TestAction(base.TestCase):
         self.assertFalse(response.success)
         self.assertIn('SERVER_ERROR', response.errors)
         self.assertIn('NameError', response.error_details[0].detail)
+
+    def test_action_action_errors(self):
+        response = self.client.call_action('exception_action', third=True)
+        self.assertFalse(response.success)
+        self.assertIn('SIMPLE_ACTION_ERROR', response.errors)
+        self.assertEqual(len(response.error_details), 0)
+
+        response = self.client.call_action('exception_action', fourth=True)
+        self.assertFalse(response.success)
+        self.assertIn('ACTION_ERROR_WITH_DETAILS', response.errors)
+        self.assertEqual(response.error_details[0].detail, 'details')

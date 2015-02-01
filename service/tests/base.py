@@ -43,6 +43,12 @@ class ExceptionAction(Action):
         if self.request.second:
             raise ExceptionAction.CustomException('custom exception')
 
+        if self.request.third:
+            raise Action.ActionError('SIMPLE_ACTION_ERROR')
+
+        if self.request.fourth:
+            raise Action.ActionError('ACTION_ERROR_WITH_DETAILS', ('ACTION_ERROR', 'details'))
+
         raise NameError('unmapped exception')
 
 
