@@ -60,7 +60,12 @@ class TestClient(base.TestCase):
         self.assertTrue(response.success)
 
     def test_client_call_action_pagination(self):
-        response = self.client.call_action('paginated_action', echo='echo', total=100)
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=100,
+            control={'paginator': {'page_size': 25}},
+        )
         self.assertTrue(response.success)
         self.assertFalse(response.control.paginator.HasField('previous_page'))
         self.assertEqual(response.control.paginator.next_page, 2)
@@ -69,7 +74,7 @@ class TestClient(base.TestCase):
             'paginated_action',
             echo='echo',
             total=100,
-            control={'paginator': {'page': response.control.paginator.next_page}},
+            control={'paginator': {'page': response.control.paginator.next_page, 'page_size': 25}},
         )
         self.assertTrue(response.success)
         # given a default page size of 25, the first echo should be suffixed
@@ -82,7 +87,7 @@ class TestClient(base.TestCase):
             'paginated_action',
             echo='echo',
             total=100,
-            control={'paginator': {'page': 4}},
+            control={'paginator': {'page': 4, 'page_size': 25}},
         )
         self.assertTrue(response.success)
         self.assertTrue(response.result.echos[0].endswith('75'))
