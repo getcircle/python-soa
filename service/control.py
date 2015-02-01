@@ -42,7 +42,15 @@ class Client(object):
     class CallActionError(Exception):
         def __init__(self, response, *args, **kwargs):
             self.response = response
-            super(Client.CallActionError, self).__init__(*args, **kwargs)
+            super(Client.CallActionError, self).__init__(self.summary, *args, **kwargs)
+
+        @property
+        def summary(self):
+            return 'ERROR: %s.%s:%s' % (
+                self.response.control.service,
+                self.response.control.action,
+                ', '.join(self.response.errors),
+            )
 
     def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
