@@ -1,3 +1,5 @@
+import traceback
+
 import service.control
 from . import settings
 from .paginator import Paginator
@@ -7,6 +9,7 @@ class Action(object):
 
     type_validators = None
     field_validators = None
+    exception_to_error_map = None
 
     def __init__(self, service_control, action_request, action_response):
         self.token = service_control.token
@@ -23,6 +26,8 @@ class Action(object):
             self.field_validators = {}
         if self.type_validators is None:
             self.type_validators = {}
+        if self.exception_to_error_map is None:
+            self.exception_to_error_map = {}
 
     def note_error(self, error, details=None):
         if details and len(details) != 2:
@@ -84,7 +89,15 @@ class Action(object):
     def execute(self, *args, **kwargs):
         self.validate()
         if not self.is_error():
-            self.run(*args, **kwargs)
+            try:
+                self.run(*args, **kwargs)
+            except Exception as e:
+                mapped_error = self.exception_to_error_map.get(e.__class__)
+                if mapped_error:
+                    self.note_error(mapped_error)
+                else:
+                    self.note_error('SERVER_ERROR', ('SERVER_ERROR', traceback.format_exc()))
+
         self._action_response.result.success = not self.is_error()
 
     def paginated_response(self, repeated_container, objects, transport_func):

@@ -1,0 +1,8 @@
+package exception_action;
+
+message Request {
+    optional bool first = 1;
+    optional bool second = 2;
+}
+
+message Response {}

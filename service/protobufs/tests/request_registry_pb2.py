@@ -15,6 +15,7 @@ _sym_db = _symbol_database.Default()
 
 import service_protobufs.soa_pb2
 import service.protobufs.tests.simple_service.another_action_pb2
+import service.protobufs.tests.simple_service.exception_action_pb2
 import service.protobufs.tests.simple_service.simple_action_pb2
 import service.protobufs.tests.simple_service.paginated_action_pb2
 
@@ -22,9 +23,9 @@ import service.protobufs.tests.simple_service.paginated_action_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/request_registry.proto',
   package='tests.registry.requests',
-  serialized_pb=_b('\n.service/protobufs/tests/request_registry.proto\x12\x17tests.registry.requests\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\x1a=service/protobufs/tests/simple_service/paginated_action.proto\"\xfa\x01\n\x15SimpleServiceRequests2I\n\x0e\x61nother_action\x12\x18.soa.ActionRequestParams\x18\x65 \x01(\x0b\x32\x17.another_action.Request2G\n\rsimple_action\x12\x18.soa.ActionRequestParams\x18\x66 \x01(\x0b\x32\x16.simple_action.Request2M\n\x10paginated_action\x12\x18.soa.ActionRequestParams\x18g \x01(\x0b\x32\x19.paginated_action.Request')
+  serialized_pb=_b('\n.service/protobufs/tests/request_registry.proto\x12\x17tests.registry.requests\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a=service/protobufs/tests/simple_service/exception_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\x1a=service/protobufs/tests/simple_service/paginated_action.proto\"\xc9\x02\n\x15SimpleServiceRequests2I\n\x0e\x61nother_action\x12\x18.soa.ActionRequestParams\x18\x65 \x01(\x0b\x32\x17.another_action.Request2G\n\rsimple_action\x12\x18.soa.ActionRequestParams\x18\x66 \x01(\x0b\x32\x16.simple_action.Request2M\n\x10paginated_action\x12\x18.soa.ActionRequestParams\x18g \x01(\x0b\x32\x19.paginated_action.Request2M\n\x10\x65xception_action\x12\x18.soa.ActionRequestParams\x18h \x01(\x0b\x32\x19.exception_action.Request')
   ,
-  dependencies=[service_protobufs.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.paginated_action_pb2.DESCRIPTOR,])
+  dependencies=[service_protobufs.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.exception_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.paginated_action_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -60,6 +61,13 @@ _SIMPLESERVICEREQUESTS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='exception_action', full_name='tests.registry.requests.SimpleServiceRequests.exception_action', index=3,
+      number=104, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=True, extension_scope=None,
+      options=None),
   ],
   nested_types=[],
   enum_types=[
@@ -69,8 +77,8 @@ _SIMPLESERVICEREQUESTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=289,
-  serialized_end=539,
+  serialized_start=352,
+  serialized_end=681,
 )
 
 DESCRIPTOR.message_types_by_name['SimpleServiceRequests'] = _SIMPLESERVICEREQUESTS
@@ -88,5 +96,7 @@ _SIMPLESERVICEREQUESTS.extensions_by_name['simple_action'].message_type = servic
 service_protobufs.soa_pb2.ActionRequestParams.RegisterExtension(_SIMPLESERVICEREQUESTS.extensions_by_name['simple_action'])
 _SIMPLESERVICEREQUESTS.extensions_by_name['paginated_action'].message_type = service.protobufs.tests.simple_service.paginated_action_pb2._REQUEST
 service_protobufs.soa_pb2.ActionRequestParams.RegisterExtension(_SIMPLESERVICEREQUESTS.extensions_by_name['paginated_action'])
+_SIMPLESERVICEREQUESTS.extensions_by_name['exception_action'].message_type = service.protobufs.tests.simple_service.exception_action_pb2._REQUEST
+service_protobufs.soa_pb2.ActionRequestParams.RegisterExtension(_SIMPLESERVICEREQUESTS.extensions_by_name['exception_action'])
 
 # @@protoc_insertion_point(module_scope)

@@ -26,6 +26,26 @@ class PaginatedAction(Action):
         self.paginated_response(self.response.echos, echos, lambda x, y: y.append(x))
 
 
+class ExceptionAction(Action):
+
+    class CustomException(Exception):
+        """custom exception"""
+
+    exception_to_error_map = {
+        ValueError: 'FIRST_EXCEPTION',
+        CustomException: 'CUSTOM_EXCEPTION',
+    }
+
+    def run(self, *args, **kwargs):
+        if self.request.first:
+            raise ValueError('first exception')
+
+        if self.request.second:
+            raise ExceptionAction.CustomException('custom exception')
+
+        raise NameError('unmapped exception')
+
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):
