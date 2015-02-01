@@ -13,6 +13,12 @@ class Action(object):
             self.details = details
             super(Action.ActionError, self).__init__(*args, **kwargs)
 
+    class ActionFieldError(Exception):
+        def __init__(self, field_name, error_message, *args, **kwargs):
+            self.field_name = field_name
+            self.error_message = error_message
+            super(Action.ActionFieldError, self).__init__(*args, **kwargs)
+
     type_validators = None
     field_validators = None
     exception_to_error_map = None
@@ -97,7 +103,9 @@ class Action(object):
         if not self.is_error():
             try:
                 self.run(*args, **kwargs)
-            except Action.ActionError as e:
+            except self.ActionFieldError as e:
+                self.note_field_error(e.field_name, e.error_message)
+            except self.ActionError as e:
                 self.note_error(e.error, e.details)
             except Exception as e:
                 mapped_error = self.exception_to_error_map.get(e.__class__)

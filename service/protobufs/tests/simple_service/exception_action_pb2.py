@@ -3,6 +3,7 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -18,10 +19,55 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/simple_service/exception_action.proto',
   package='exception_action',
-  serialized_pb=_b('\n=service/protobufs/tests/simple_service/exception_action.proto\x12\x10\x65xception_action\"G\n\x07Request\x12\r\n\x05\x66irst\x18\x01 \x01(\x08\x12\x0e\n\x06second\x18\x02 \x01(\x08\x12\r\n\x05third\x18\x03 \x01(\x08\x12\x0e\n\x06\x66ourth\x18\x04 \x01(\x08\"\n\n\x08Response')
+  serialized_pb=_b('\n=service/protobufs/tests/simple_service/exception_action.proto\x12\x10\x65xception_action\":\n\x07Request\x12/\n\nerror_type\x18\x01 \x01(\x0e\x32\x1b.exception_action.ErrorType\"\n\n\x08Response*\x8b\x01\n\tErrorType\x12\x0f\n\x0bVALUE_ERROR\x10\x01\x12\x10\n\x0c\x43USTOM_ERROR\x10\x02\x12\x10\n\x0c\x41\x43TION_ERROR\x10\x03\x12\x1d\n\x19\x41\x43TION_ERROR_WITH_DETAILS\x10\x04\x12\x16\n\x12\x41\x43TION_FIELD_ERROR\x10\x05\x12\x12\n\x0eUNMAPPED_ERROR\x10\x06')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
+_ERRORTYPE = _descriptor.EnumDescriptor(
+  name='ErrorType',
+  full_name='exception_action.ErrorType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='VALUE_ERROR', index=0, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CUSTOM_ERROR', index=1, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ACTION_ERROR', index=2, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ACTION_ERROR_WITH_DETAILS', index=3, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ACTION_FIELD_ERROR', index=4, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='UNMAPPED_ERROR', index=5, number=6,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=156,
+  serialized_end=295,
+)
+_sym_db.RegisterEnumDescriptor(_ERRORTYPE)
+
+ErrorType = enum_type_wrapper.EnumTypeWrapper(_ERRORTYPE)
+VALUE_ERROR = 1
+CUSTOM_ERROR = 2
+ACTION_ERROR = 3
+ACTION_ERROR_WITH_DETAILS = 4
+ACTION_FIELD_ERROR = 5
+UNMAPPED_ERROR = 6
 
 
 
@@ -33,30 +79,9 @@ _REQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='first', full_name='exception_action.Request.first', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='second', full_name='exception_action.Request.second', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='third', full_name='exception_action.Request.third', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='fourth', full_name='exception_action.Request.fourth', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
+      name='error_type', full_name='exception_action.Request.error_type', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -72,7 +97,7 @@ _REQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=83,
-  serialized_end=154,
+  serialized_end=141,
 )
 
 
@@ -94,12 +119,14 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=156,
-  serialized_end=166,
+  serialized_start=143,
+  serialized_end=153,
 )
 
+_REQUEST.fields_by_name['error_type'].enum_type = _ERRORTYPE
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
+DESCRIPTOR.enum_types_by_name['ErrorType'] = _ERRORTYPE
 
 Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
   DESCRIPTOR = _REQUEST,

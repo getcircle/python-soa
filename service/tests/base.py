@@ -2,6 +2,7 @@ import unittest
 
 from service.actions import Action
 import service.control
+from service.protobufs.tests.simple_service import exception_action_pb2
 
 
 class SimpleAction(Action):
@@ -37,19 +38,18 @@ class ExceptionAction(Action):
     }
 
     def run(self, *args, **kwargs):
-        if self.request.first:
+        if self.request.error_type == exception_action_pb2.VALUE_ERROR:
             raise ValueError('first exception')
-
-        if self.request.second:
+        elif self.request.error_type == exception_action_pb2.CUSTOM_ERROR:
             raise ExceptionAction.CustomException('custom exception')
-
-        if self.request.third:
-            raise Action.ActionError('SIMPLE_ACTION_ERROR')
-
-        if self.request.fourth:
-            raise Action.ActionError('ACTION_ERROR_WITH_DETAILS', ('ACTION_ERROR', 'details'))
-
-        raise NameError('unmapped exception')
+        elif self.request.error_type == exception_action_pb2.ACTION_ERROR:
+            raise self.ActionError('SIMPLE_ACTION_ERROR')
+        elif self.request.error_type == exception_action_pb2.ACTION_ERROR_WITH_DETAILS:
+            raise self.ActionError('ACTION_ERROR_WITH_DETAILS', ('ACTION_ERROR', 'details'))
+        elif self.request.error_type == exception_action_pb2.ACTION_FIELD_ERROR:
+            raise self.ActionFieldError('error_type', 'CUSTOM_FIELD_ERROR')
+        elif self.request.error_type == exception_action_pb2.UNMAPPED_ERROR:
+            raise NameError('unmapped exception')
 
 
 class TestCase(unittest.TestCase):
