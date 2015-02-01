@@ -9,6 +9,7 @@ class SimpleAction(base.SimpleAction):
 
     type_validators = {
         'user_id': [validators.is_uuid4],
+        'echo': [lambda x: x.startswith('boo')],
     }
 
     field_validators = {
@@ -44,6 +45,20 @@ class TestValidators(base.TestCase):
         error_detail = response.error_details[0]
         self.assertEqual(error_detail.error, 'FIELD_ERROR')
         self.assertEqual(error_detail.key, 'user_id')
+        self.assertEqual(error_detail.detail, 'INVALID')
+
+    def test_failed_type_validators_doesnt_run_feild_validators(self):
+        response = self.client.call_action(
+            'simple_action',
+            echo='foo',
+        )
+        self.assertFalse(response.success)
+        self.assertIn('FIELD_ERROR', response.errors)
+
+        self.assertEqual(len(response.error_details), 1)
+        error_detail = response.error_details[0]
+        self.assertEqual(error_detail.error, 'FIELD_ERROR')
+        self.assertEqual(error_detail.key, 'echo')
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_field_validator_results_in_error(self):

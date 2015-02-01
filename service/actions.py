@@ -22,6 +22,7 @@ class Action(object):
     type_validators = None
     field_validators = None
     exception_to_error_map = None
+    required_fields = None
 
     def __init__(self, service_control, action_request, action_response):
         self.token = service_control.token
@@ -40,6 +41,8 @@ class Action(object):
             self.type_validators = {}
         if self.exception_to_error_map is None:
             self.exception_to_error_map = {}
+        if self.required_fields is None:
+            self.required_fields = tuple()
 
     def note_error(self, error, details=None):
         if details and len(details) != 2:
@@ -64,10 +67,13 @@ class Action(object):
         return bool(self._errors)
 
     def check_type_validators(self, field_name, value):
+        valid = True
         validators = self.type_validators.get(field_name, [])
         for validator in validators:
             if not validator(value):
                 self.note_field_error(field_name, 'INVALID')
+                valid = False
+        return valid
 
     def check_field_validators(self, field_name, value):
         validators = self.field_validators.get(field_name, {})
@@ -86,10 +92,15 @@ class Action(object):
             self.note_field_error('paginator.page_size', 'OVER_MAXIMUM')
 
     def validate_message(self, message, prefix=''):
+        for field_name in self.required_fields:
+            if not message.HasField(field_name):
+                self.note_field_error(field_name, 'MISSING')
+
         for field, value in message.ListFields():
             field_name = self.add_prefix(prefix, field.name)
-            self.check_type_validators(field_name, value)
-            if not self.is_error():
+            valid = self.check_type_validators(field_name, value)
+            # only run field validators if type_validators passed
+            if valid:
                 self.check_field_validators(field_name, value)
             if hasattr(value, 'ListFields'):
                 self.validate_message(value, prefix=field_name)
@@ -99,20 +110,20 @@ class Action(object):
         self.validate_message(self.request)
 
     def execute(self, *args, **kwargs):
-        self.validate()
-        if not self.is_error():
-            try:
+        try:
+            self.validate()
+            if not self.is_error():
                 self.run(*args, **kwargs)
-            except self.ActionFieldError as e:
-                self.note_field_error(e.field_name, e.error_message)
-            except self.ActionError as e:
-                self.note_error(e.error, e.details)
-            except Exception as e:
-                mapped_error = self.exception_to_error_map.get(e.__class__)
-                if mapped_error:
-                    self.note_error(mapped_error, (mapped_error, str(e)))
-                else:
-                    self.note_error('SERVER_ERROR', ('SERVER_ERROR', traceback.format_exc()))
+        except self.ActionFieldError as e:
+            self.note_field_error(e.field_name, e.error_message)
+        except self.ActionError as e:
+            self.note_error(e.error, e.details)
+        except Exception as e:
+            mapped_error = self.exception_to_error_map.get(e.__class__)
+            if mapped_error:
+                self.note_error(mapped_error, (mapped_error, str(e)))
+            else:
+                self.note_error('SERVER_ERROR', ('SERVER_ERROR', traceback.format_exc()))
 
         self._action_response.result.success = not self.is_error()
 

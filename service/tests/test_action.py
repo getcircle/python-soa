@@ -7,6 +7,7 @@ class SampleServer(service.control.Server):
     service_name = 'simple'
     actions = {
         'exception_action': base.ExceptionAction,
+        'required_fields_action': base.RequiredFieldsAction,
     }
 
 
@@ -51,3 +52,9 @@ class TestAction(base.TestCase):
         self.assertFalse(response.success)
         self.assertIn('FIELD_ERROR', response.errors)
         self.assertEqual(response.error_details[0].detail, 'CUSTOM_FIELD_ERROR')
+
+    def test_action_required_field_missing(self):
+        response = self.client.call_action('required_fields_action')
+        self.assertFalse(response.success)
+        self.assertIn('FIELD_ERROR', response.errors)
+        self.assertEqual(response.error_details[0].detail, 'MISSING')

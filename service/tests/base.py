@@ -52,6 +52,15 @@ class ExceptionAction(Action):
             raise NameError('unmapped exception')
 
 
+class RequiredFieldsAction(Action):
+
+    required_fields = ('required_field',)
+
+    def run(self, *args, **kwargs):
+        self.response.required_field = self.request.required_field
+        self.response.optional_field = self.request.optional_field
+
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):

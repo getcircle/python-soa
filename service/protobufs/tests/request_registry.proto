@@ -4,8 +4,9 @@ import "service_protobufs/soa.proto";
 
 import "service/protobufs/tests/simple_service/another_action.proto";
 import "service/protobufs/tests/simple_service/exception_action.proto";
-import "service/protobufs/tests/simple_service/simple_action.proto";
 import "service/protobufs/tests/simple_service/paginated_action.proto";
+import "service/protobufs/tests/simple_service/required_fields_action.proto";
+import "service/protobufs/tests/simple_service/simple_action.proto";
 
 
 message SimpleServiceRequests {
@@ -14,5 +15,6 @@ message SimpleServiceRequests {
         optional simple_action.Request simple_action = 102;
         optional paginated_action.Request paginated_action = 103;
         optional exception_action.Request exception_action = 104;
+        optional required_fields_action.Request required_fields_action = 105;
     }
 }

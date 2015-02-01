@@ -33,7 +33,7 @@ def base_directory():
 
 
 @task
-def test(failfast=False):
+def test(failfast=False, extra=''):
     NOSE_ARGS = [
         '--with-coverage',
         '--cover-erase',
@@ -42,7 +42,7 @@ def test(failfast=False):
     with base_directory():
         if failfast:
             NOSE_ARGS.append('-x')
-        command = 'nosetests %s' % (' '.join(NOSE_ARGS),)
+        command = 'nosetests %s %s' % (' '.join(NOSE_ARGS), extra)
         print command
         run(command, pty=True)
 
