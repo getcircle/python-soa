@@ -35,10 +35,13 @@ class TestValidators(base.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_failed_type_validator_results_in_error(self):
-        response = self.client.call_action(
-            'simple_action',
-            user_id='12321313',
-        )
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'simple_action',
+                user_id='12321313',
+            )
+
+        response = expected.exception.response
         self.assertFalse(response.success)
         self.assertIn('FIELD_ERROR', response.errors)
 
@@ -48,10 +51,13 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_type_validators_doesnt_run_feild_validators(self):
-        response = self.client.call_action(
-            'simple_action',
-            echo='foo',
-        )
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'simple_action',
+                echo='foo',
+            )
+
+        response = expected.exception.response
         self.assertFalse(response.success)
         self.assertIn('FIELD_ERROR', response.errors)
 
@@ -62,10 +68,13 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_field_validator_results_in_error(self):
-        response = self.client.call_action(
-            'simple_action',
-            echo='boo',
-        )
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'simple_action',
+                echo='boo',
+            )
+
+        response = expected.exception.response
         self.assertFalse(response.success)
         self.assertIn('FIELD_ERROR', response.errors)
 
@@ -75,12 +84,14 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'Must be excited')
 
     def test_is_uuid4_validates_uuid(self):
-        response = self.client.call_action(
-            'simple_action',
-            user_id='123123123',
-        )
-        self.assertFalse(response.success)
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'simple_action',
+                user_id='123123123',
+            )
 
+        response = expected.exception.response
+        self.assertFalse(response.success)
         response = self.client.call_action(
             'simple_action',
             user_id=uuid.uuid4().hex,

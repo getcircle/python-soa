@@ -107,12 +107,15 @@ class TestClient(base.TestCase):
         self.assertTrue(response.result.echos[0].endswith('0'))
 
     def test_client_call_action_over_max_page(self):
-        response = self.client.call_action(
-            'paginated_action',
-            echo='echo',
-            total=100,
-            control={'paginator': {'page_size': 1000}},
-        )
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'paginated_action',
+                echo='echo',
+                total=100,
+                control={'paginator': {'page_size': 1000}},
+            )
+
+        response = expected.exception.response
         self.assertFalse(response.success)
         self.assertIn('FIELD_ERROR', response.errors)
         field_error = response.error_details[0]
@@ -140,9 +143,12 @@ class TestAuthExemptActions(base.TestCase):
         self.assertEqual(response.result.answer, 'echo!')
 
     def test_client_non_auth_exempt_action(self):
-        response = self.client.call_action(
-            'another_action',
-            test='test',
-        )
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'another_action',
+                test='test',
+            )
+
+        response = expected.exception.response
         self.assertFalse(response.success)
         self.assertIn('FORBIDDEN', response.errors)

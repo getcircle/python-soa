@@ -39,6 +39,11 @@ class Response(object):
 
 class Client(object):
 
+    class CallActionError(Exception):
+        def __init__(self, response, *args, **kwargs):
+            self.response = response
+            super(Client.CallActionError, self).__init__(*args, **kwargs)
+
     def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
         self.token = token
@@ -124,6 +129,9 @@ class Client(object):
         extension_response = action_response.result.Extensions[extension]
         response_wrapper = Response(action_response, extension_response)
         self._post_call_action_hook(response_wrapper)
+        if not response_wrapper.success:
+            raise Client.CallActionError(response_wrapper)
+
         return response_wrapper
 
 
