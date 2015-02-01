@@ -24,6 +24,7 @@ class TestAction(base.TestCase):
         response = self.client.call_action('exception_action', first=True)
         self.assertFalse(response.success)
         self.assertIn('FIRST_EXCEPTION', response.errors)
+        self.assertIn('ValueError', response.error_details[0].detail)
 
         response = self.client.call_action('exception_action', second=True)
         self.assertFalse(response.success)
