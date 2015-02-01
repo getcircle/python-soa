@@ -94,7 +94,7 @@ class Action(object):
             except Exception as e:
                 mapped_error = self.exception_to_error_map.get(e.__class__)
                 if mapped_error:
-                    self.note_error(mapped_error, (mapped_error, traceback.format_exc()))
+                    self.note_error(mapped_error, (mapped_error, str(e)))
                 else:
                     self.note_error('SERVER_ERROR', ('SERVER_ERROR', traceback.format_exc()))
 
