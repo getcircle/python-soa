@@ -109,7 +109,7 @@ class Client(object):
             else:
                 raise exceptions.RogueParameter(key)
 
-    def call_action(self, action_name, **params):
+    def call_action(self, action_name, on_error=None, **params):
         service_request = soa_pb2.ServiceRequest()
         service_request.control.service = self.service_name
         if self.token is not None:
@@ -138,6 +138,8 @@ class Client(object):
         response_wrapper = Response(action_response, extension_response)
         self._post_call_action_hook(response_wrapper)
         if not response_wrapper.success:
+            if isinstance(on_error, Exception):
+                raise on_error
             raise Client.CallActionError(response_wrapper)
 
         return response_wrapper

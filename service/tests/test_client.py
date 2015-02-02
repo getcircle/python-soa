@@ -122,6 +122,15 @@ class TestClient(base.TestCase):
         self.assertEqual('paginator.page_size', field_error.key)
         self.assertEqual(field_error.detail, 'OVER_MAXIMUM')
 
+    def test_client_call_action_on_error(self):
+        with self.assertRaises(ValueError):
+            self.client.call_action(
+                'paginated_action',
+                echo='echo',
+                control={'paginator': {'page_size': 1000}},
+                on_error=ValueError('exception'),
+            )
+
 
 class TestAuthExemptActions(base.TestCase):
 
