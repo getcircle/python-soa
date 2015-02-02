@@ -46,11 +46,21 @@ class Client(object):
 
         @property
         def summary(self):
-            return 'ERROR: %s.%s:%s' % (
+            return 'ERROR: %s.%s\n%s' % (
                 self.response.control.service,
                 self.response.control.action,
-                ', '.join(self.response.errors),
+                self.generate_error_summary(),
             )
+
+        def generate_error_summary(self):
+            summary = ''
+            if self.response.errors:
+                summary += 'errors: %s\n' % ('\n  -'.join(self.response.errors))
+            if self.response.error_details:
+                summaries = ['%s:%s:%s' % (detail.error, detail.key, detail.detail) for detail
+                             in self.response.error_details]
+                summary += 'error_details: %s\n' % ('\n   -'.join(summaries))
+            return summary
 
     def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
