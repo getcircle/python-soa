@@ -1,4 +1,9 @@
-from protobuf_to_dict import dict_to_protobuf
+import logging
+
+from protobuf_to_dict import (
+    dict_to_protobuf,
+    protobuf_to_dict,
+)
 from service_protobufs import soa_pb2
 
 from . import (
@@ -161,8 +166,21 @@ class Server(object):
     service_name = None
     auth_exempt_actions = tuple()
 
+    @property
+    def logger(self):
+        if not hasattr(self, '_logger'):
+            self._logger = logging.getLogger('services.%s' % (self.service_name,))
+        return self._logger
+
+    def record_message_received(self, service_request):
+        self.logger.log('received: %s', protobuf_to_dict(service_request))
+
+    def record_message_sent(self, service_response):
+        self.logger.log('sent: %s', protobuf_to_dict(service_response))
+
     def handle_request(self, serialized_request):
         service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
+        self.record_message_received(service_request)
         service_response = soa_pb2.ServiceResponse()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
@@ -198,6 +216,7 @@ class Server(object):
             if not action_response.result.errors:
                 action_response.result.success = True
 
+        self.record_message_sent(service_response)
         return service_response
 
 
