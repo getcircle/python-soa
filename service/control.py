@@ -173,10 +173,10 @@ class Server(object):
         return self._logger
 
     def record_message_received(self, service_request):
-        self.logger.log('received: %s', protobuf_to_dict(service_request))
+        self.logger.info('received: %s', protobuf_to_dict(service_request))
 
     def record_message_sent(self, service_response):
-        self.logger.log('sent: %s', protobuf_to_dict(service_response))
+        self.logger.info('sent: %s', protobuf_to_dict(service_response))
 
     def handle_request(self, serialized_request):
         service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
