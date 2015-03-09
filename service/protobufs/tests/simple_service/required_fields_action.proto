@@ -3,9 +3,11 @@ package required_fields_action;
 message Request {
     optional string required_field = 1;
     optional string optional_field = 2;
+    repeated string required_repeated_field = 3;
 }
 
 message Response {
     optional string required_field = 1;
     optional string optional_field = 2;
+    optional string required_repeated_field = 3;
 }

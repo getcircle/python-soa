@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/simple_service/required_fields_action.proto',
   package='required_fields_action',
-  serialized_pb=_b('\nCservice/protobufs/tests/simple_service/required_fields_action.proto\x12\x16required_fields_action\"9\n\x07Request\x12\x16\n\x0erequired_field\x18\x01 \x01(\t\x12\x16\n\x0eoptional_field\x18\x02 \x01(\t\":\n\x08Response\x12\x16\n\x0erequired_field\x18\x01 \x01(\t\x12\x16\n\x0eoptional_field\x18\x02 \x01(\t')
+  serialized_pb=_b('\nCservice/protobufs/tests/simple_service/required_fields_action.proto\x12\x16required_fields_action\"Z\n\x07Request\x12\x16\n\x0erequired_field\x18\x01 \x01(\t\x12\x16\n\x0eoptional_field\x18\x02 \x01(\t\x12\x1f\n\x17required_repeated_field\x18\x03 \x03(\t\"[\n\x08Response\x12\x16\n\x0erequired_field\x18\x01 \x01(\t\x12\x16\n\x0eoptional_field\x18\x02 \x01(\t\x12\x1f\n\x17required_repeated_field\x18\x03 \x01(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -46,6 +46,13 @@ _REQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='required_repeated_field', full_name='required_fields_action.Request.required_repeated_field', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -58,7 +65,7 @@ _REQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=95,
-  serialized_end=152,
+  serialized_end=185,
 )
 
 
@@ -83,6 +90,13 @@ _RESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='required_repeated_field', full_name='required_fields_action.Response.required_repeated_field', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -94,8 +108,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=212,
+  serialized_start=187,
+  serialized_end=278,
 )
 
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST

@@ -93,8 +93,15 @@ class Action(object):
 
     def validate_message(self, message, prefix=''):
         for field_name in self.required_fields:
-            if not message.HasField(field_name):
-                self.note_field_error(field_name, 'MISSING')
+            try:
+                if not message.HasField(field_name):
+                    self.note_field_error(field_name, 'MISSING')
+            except ValueError:
+                try:
+                    if not len(getattr(message, field_name, [])):
+                        self.note_field_error(field_name, 'MISSING')
+                except TypeError:
+                    self.note_field_error(field_name, 'MISSING')
 
         for field, value in message.ListFields():
             field_name = self.add_prefix(prefix, field.name)

@@ -54,11 +54,12 @@ class ExceptionAction(Action):
 
 class RequiredFieldsAction(Action):
 
-    required_fields = ('required_field',)
+    required_fields = ('required_field', 'required_repeated_field')
 
     def run(self, *args, **kwargs):
         self.response.required_field = self.request.required_field
         self.response.optional_field = self.request.optional_field
+        self.response.required_repeated_field = self.request.required_repeated_field
 
 
 class TestCase(unittest.TestCase):
