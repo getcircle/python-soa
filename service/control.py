@@ -124,7 +124,7 @@ class Client(object):
             else:
                 raise exceptions.RogueParameter(key)
 
-    def call_action(self, action_name, on_error=None, **params):
+    def _build_request(self, action_name, **params):
         service_request = soa_pb2.ServiceRequest()
         service_request.control.service = self.service_name
         if self.token is not None:
@@ -142,7 +142,10 @@ class Client(object):
         )
         request = action_request.params.Extensions[extension]
         self._copy_params_to_protobuf(params, request)
+        return service_request
 
+    def call_action(self, action_name, on_error=None, **params):
+        service_request = self._build_request(action_name, **params)
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(
             self.service_name,

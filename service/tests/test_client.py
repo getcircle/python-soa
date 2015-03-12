@@ -106,6 +106,36 @@ class TestClient(base.TestCase):
         self.assertEqual(response.control.paginator.total_pages, 34)
         self.assertTrue(response.result.echos[0].endswith('0'))
 
+    def test_client_call_action_last_page(self):
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=10,
+            control={'paginator': {'page_size': 5, 'page': 2}},
+        )
+        self.assertEqual(response.control.paginator.count, 10)
+        self.assertFalse(response.control.paginator.HasField('next_page'))
+
+    def test_client_call_action_last_page_request_specifies_next_page(self):
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=10,
+            control={'paginator': {'page_size': 5, 'page': 2, 'next_page': 2}},
+        )
+        self.assertEqual(response.control.paginator.count, 10)
+        self.assertFalse(response.control.paginator.HasField('next_page'))
+
+    def test_client_call_action_last_page_request_specifies_previous_page(self):
+        response = self.client.call_action(
+            'paginated_action',
+            echo='echo',
+            total=10,
+            control={'paginator': {'page_size': 5, 'previous_page': 1}},
+        )
+        self.assertEqual(response.control.paginator.count, 10)
+        self.assertFalse(response.control.paginator.HasField('previous_page'))
+
     def test_client_call_action_over_max_page(self):
         with self.assertRaises(self.client.CallActionError) as expected:
             self.client.call_action(

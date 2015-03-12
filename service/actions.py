@@ -144,9 +144,13 @@ class Action(object):
         self.control.paginator.total_pages = paginator.num_pages
         if page.has_next():
             self.control.paginator.next_page = page.next_page_number()
+        else:
+            self.control.paginator.ClearField('next_page')
 
         if page.has_previous():
             self.control.paginator.previous_page = page.previous_page_number()
+        else:
+            self.control.paginator.ClearField('previous_page')
 
     def run(self, *args, **kwargs):
         raise NotImplementedError('Action must define `run` method')
