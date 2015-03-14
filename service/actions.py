@@ -152,7 +152,7 @@ class Action(object):
             paginator = self.get_paginator(objects)
 
         if page is None:
-            page = self.get_page(page)
+            page = self.get_page(paginator)
         for item in page.object_list:
             transport_func(item, repeated_container)
 
