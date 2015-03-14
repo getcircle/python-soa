@@ -134,11 +134,25 @@ class Action(object):
 
         self._action_response.result.success = not self.is_error()
 
-    def paginated_response(self, repeated_container, objects, transport_func, paginator=None):
-        if paginator is None:
-            paginator = Paginator(objects, self.control.paginator.page_size)
+    def get_paginator(self, objects):
+        return Paginator(objects, self.control.paginator.page_size)
 
-        page = paginator.page(self.control.paginator.page)
+    def get_page(self, paginator):
+        return paginator.page(self.control.paginator.page)
+
+    def paginated_response(
+            self,
+            repeated_container,
+            objects,
+            transport_func,
+            paginator=None,
+            page=None,
+        ):
+        if paginator is None:
+            paginator = self.get_paginator(objects)
+
+        if page is None:
+            page = self.get_page(page)
         for item in page.object_list:
             transport_func(item, repeated_container)
 
