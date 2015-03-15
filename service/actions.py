@@ -116,11 +116,19 @@ class Action(object):
         self.validate_control()
         self.validate_message(self.request)
 
+    def pre_handle(self):
+        pass
+
+    def post_handle(self):
+        pass
+
     def execute(self, *args, **kwargs):
         try:
             self.validate()
             if not self.is_error():
+                self.pre_handle()
                 self.run(*args, **kwargs)
+                self.post_handle()
         except self.ActionFieldError as e:
             self.note_field_error(e.field_name, e.error_message)
         except self.ActionError as e:
