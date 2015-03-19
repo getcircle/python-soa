@@ -1,4 +1,4 @@
-from contextlib import contextmanager
+from contextlib2 import contextmanager
 import time as pytime
 
 from .. import (

@@ -182,8 +182,12 @@ class Server(object):
     def record_message_sent(self, service_response):
         self.logger.info('sent: %s', protobuf_to_dict(service_response))
 
+    @metrics.count('service.request.count')
+    @metrics.time('service.response.time')
     def handle_request(self, serialized_request):
-        service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
+        with metrics.time('service.request.deserialization.time'):
+            service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
+
         self.record_message_received(service_request)
         service_response = soa_pb2.ServiceResponse()
         service_response.control.CopyFrom(service_request.control)
@@ -215,7 +219,13 @@ class Server(object):
                 )
 
             if not action.is_error():
-                action.execute()
+                metric_name = 'service.%s.action.%s' % (
+                    self.service_name,
+                    action_request.control.action,
+                )
+                metrics.increment('%s.%s' % (metric_name, 'count'))
+                with metrics.time('%s.%s' % (metric_name, 'time')):
+                    action.execute()
 
             if not action_response.result.errors:
                 action_response.result.success = True

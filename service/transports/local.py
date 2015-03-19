@@ -1,4 +1,5 @@
 from .base import BaseTransport
+from .. import metrics
 
 
 class LocalTransport(BaseTransport):
@@ -16,6 +17,8 @@ class LocalTransport(BaseTransport):
     def process_request(self, service_request, serialized_request):
         server = self.localized_services[service_request.control.service]
         response = server.handle_request(serialized_request)
-        return response.SerializeToString()
+        with metrics.time('service.response.serialization.time'):
+            serialized_response = response.SerializeToString()
+        return serialized_response
 
 instance = LocalTransport()

@@ -6,6 +6,7 @@ from setuptools import (
 import service
 
 requirements = [
+    'contextlib2==0.4.0',
     'protobuf-soa>=0.1.1',
     'protobuf-to-dict==0.1.0',
 ]
