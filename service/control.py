@@ -8,6 +8,7 @@ from service_protobufs import soa_pb2
 
 from . import (
     exceptions,
+    metrics,
     registry,
     settings,
     utils,
@@ -229,6 +230,10 @@ def set_protobufs_request_registry(path_name_or_registry):
 
 def set_protobufs_response_registry(path_name_or_registry):
     registry.response_registry.set_registry(path_name_or_registry)
+
+
+def set_metrics_handler(handler):
+    metrics._instance = handler
 
 
 def localize_server(server_class):

@@ -43,3 +43,7 @@ class InvalidServiceResponse(Exception):
     def __init__(self, response, **kwargs):
         message = 'Expected ServiceResponse instance, got: "%s"' % (response,)
         super(InvalidServiceResponse, self).__init__(message, **kwargs)
+
+
+class ImproperlyConfigured(Exception):
+    """Exception raised when a class is improperly configured"""
