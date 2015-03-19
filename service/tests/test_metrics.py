@@ -42,6 +42,12 @@ class TestMetrics(base.TestCase):
         metrics.gauge('test', 1)
         self._verify_metric('gauge', 'test', 1)
 
+    def test_metrics_count(self):
+        with metrics.count('test'):
+            pass
+
+        self._verify_metric('increment', 'test', 1)
+
     def test_metrics_time(self):
         with metrics.time('test'):
             time.sleep(0.001)

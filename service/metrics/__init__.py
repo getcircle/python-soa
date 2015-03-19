@@ -51,3 +51,10 @@ def time(metric_name, *args, **kwargs):
         yield
     finally:
         histogram(metric_name, pytime.time() - start, *args, **kwargs)
+
+
+@contextmanager
+def count(metric_name, *args, **kwargs):
+    """A decorator/contextmanager that will increment a given metric each time"""
+    increment(metric_name, *args, **kwargs)
+    yield
