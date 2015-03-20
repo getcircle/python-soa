@@ -18,7 +18,13 @@ class MockTransport(BaseTransport):
         self.mock_regex_lookups = {}
 
     def _get_params_hash(self, params):
-        ordered = sorted(params.items(), key=lambda x: x[0])
+        ordered_params = sorted(params.items(), key=lambda x: x[0])
+        ordered = []
+        for key, value in ordered_params:
+            if isinstance(value, list):
+                value.sort()
+            ordered.append((key, value))
+
         serializable = []
         for key, value in ordered:
             if isinstance(value, message.Message):
