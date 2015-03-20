@@ -246,6 +246,10 @@ def set_metrics_handler(handler):
     metrics._instance = handler
 
 
+def start_metrics_handler(*args, **kwargs):
+    metrics.start(*args, **kwargs)
+
+
 def localize_server(server_class):
     local_transport.instance.localize_server(server_class)
 
