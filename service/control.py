@@ -184,6 +184,8 @@ class Server(object):
 
     @metrics.count('service.request.count')
     @metrics.time('service.response.time')
+    @metrics.count('service.%s.request.count' % (service_name,))
+    @metrics.time('service.%s.response.time' % (service_name,))
     def handle_request(self, serialized_request):
         with metrics.time('service.request.deserialization.time'):
             service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
