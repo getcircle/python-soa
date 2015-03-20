@@ -16,17 +16,14 @@ class DataDogMetricsHandler(BaseMetricsHandler):
 
     def gauge(self, *args, **kwargs):
         super(DataDogMetricsHandler, self).gauge(*args, **kwargs)
-        self._validate_handler_started()
         dog_stats_api.gauge(*args, **kwargs)
 
     def increment(self, *args, **kwargs):
         super(DataDogMetricsHandler, self).increment(*args, **kwargs)
-        self._validate_handler_started()
         dog_stats_api.increment(*args, **kwargs)
 
     def histogram(self, *args, **kwargs):
         super(DataDogMetricsHandler, self).histogram(*args, **kwargs)
-        self._validate_handler_started()
         dog_stats_api.histogram(*args, **kwargs)
 
 instance = DataDogMetricsHandler()
