@@ -185,7 +185,7 @@ class Server(object):
     @metrics.count('service.request.count')
     @metrics.time('service.response.time')
     def handle_request(self, serialized_request):
-        with metrics.time('service.%s.response.time' % (service_name,)):
+        with metrics.time('service.%s.response.time' % (self.service_name,)):
             return self._handle_request(serialized_request)
 
     def _handle_request(self, serialized_request):
