@@ -148,6 +148,12 @@ class Action(object):
     def get_page(self, paginator):
         return paginator.page(self.control.paginator.page)
 
+    def get_pagination_offset_and_limit(self, total_count):
+        paginator = Paginator([], self.control.paginator.page_size)
+        paginator._count = total_count
+        bottom, _ = paginator.get_page_bottom_top(self.control.paginator.page)
+        return bottom, self.control.paginator.page_size
+
     def paginated_response(
             self,
             repeated_container,

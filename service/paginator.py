@@ -42,15 +42,19 @@ class Paginator(object):
                 raise EmptyPage('That page contains no results')
         return number
 
-    def page(self, number):
-        """
-        Returns a Page object for the given 1-based page number.
-        """
+    def get_page_bottom_top(self, number):
         number = self.validate_number(number)
         bottom = (number - 1) * self.per_page
         top = bottom + self.per_page
         if top + self.orphans >= self.count:
             top = self.count
+        return bottom, top
+
+    def page(self, number):
+        """
+        Returns a Page object for the given 1-based page number.
+        """
+        bottom, top = self.get_page_bottom_top(number)
         return self._get_page(self.object_list[bottom:top], number, self)
 
     def _get_page(self, *args, **kwargs):
