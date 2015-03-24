@@ -142,7 +142,7 @@ class Action(object):
 
         self._action_response.result.success = not self.is_error()
 
-    def get_paginator(self, objects, count):
+    def get_paginator(self, objects, count=None):
         return Paginator(objects, self.control.paginator.page_size, count=count)
 
     def get_page(self, paginator):
