@@ -142,8 +142,8 @@ class Action(object):
 
         self._action_response.result.success = not self.is_error()
 
-    def get_paginator(self, objects):
-        return Paginator(objects, self.control.paginator.page_size)
+    def get_paginator(self, objects, count):
+        return Paginator(objects, self.control.paginator.page_size, count=count)
 
     def get_page(self, paginator):
         return paginator.page(self.control.paginator.page)
@@ -161,9 +161,10 @@ class Action(object):
             transport_func,
             paginator=None,
             page=None,
+            count=None,
         ):
         if paginator is None:
-            paginator = self.get_paginator(objects)
+            paginator = self.get_paginator(objects, count)
 
         if page is None:
             page = self.get_page(paginator)

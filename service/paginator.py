@@ -18,12 +18,16 @@ class EmptyPage(InvalidPage):
 class Paginator(object):
 
     def __init__(self, object_list, per_page, orphans=0,
-                 allow_empty_first_page=True):
+                 allow_empty_first_page=True, count=None):
         self.object_list = object_list
         self.per_page = int(per_page)
         self.orphans = int(orphans)
         self.allow_empty_first_page = allow_empty_first_page
         self._num_pages = self._count = None
+        self._pre_calculated = count is not None
+        if count is not None:
+            self._count = int(count)
+
 
     def validate_number(self, number):
         """
@@ -55,7 +59,11 @@ class Paginator(object):
         Returns a Page object for the given 1-based page number.
         """
         bottom, top = self.get_page_bottom_top(number)
-        return self._get_page(self.object_list[bottom:top], number, self)
+        if not self._pre_calculated:
+            page_object_list = self.object_list[bottom:top]
+        else:
+            page_object_list = self.object_list
+        return self._get_page(page_object_list, number, self)
 
     def _get_page(self, *args, **kwargs):
         """
