@@ -71,6 +71,19 @@ class TestAction(base.TestCase):
         self.assertIn('FIELD_ERROR', response.errors)
         self.assertEqual(response.error_details[0].detail, 'CUSTOM_FIELD_ERROR')
 
+    def test_action_required_field(self):
+        response = self.client.call_action(
+            'required_fields_action',
+            required_repeated_field=['required'],
+            required_field='required',
+            required_container={
+                'required_field': 'required',
+            },
+        )
+        self.assertEqual(response.result.required_field, 'required')
+        self.assertEqual(response.result.required_repeated_field, ['required'])
+        self.assertEqual(response.result.required_container.required_field, 'required')
+
     def test_action_required_field_missing(self):
         with self.assertRaises(self.client.CallActionError) as expected:
             self.client.call_action('required_fields_action', required_repeated_field=['required'])
@@ -90,3 +103,16 @@ class TestAction(base.TestCase):
         self.assertIn('FIELD_ERROR', response.errors)
         self.assertEqual(response.error_details[0].detail, 'MISSING')
         self.assertEqual(response.error_details[0].key, 'required_repeated_field')
+
+    def test_action_required_field_missing_required_container_required_field(self):
+        with self.assertRaises(self.client.CallActionError) as expected:
+            self.client.call_action(
+                'required_fields_action',
+                required_field='required',
+                required_repeated_field=['required'],
+            )
+
+        response = expected.exception.response
+        self.assertIn('FIELD_ERROR', response.errors)
+        self.assertEqual(response.error_details[0].detail, 'MISSING')
+        self.assertEqual(response.error_details[0].key, 'required_container.required_field')

@@ -91,8 +91,21 @@ class Action(object):
         if self.control.paginator.page_size > settings.MAX_PAGE_SIZE:
             self.note_field_error('paginator.page_size', 'OVER_MAXIMUM')
 
-    def validate_message(self, message, prefix=''):
-        for field_name in self.required_fields:
+    def _validate_required_fields(self, message, required_fields=None):
+        field_dict = dict((field.name, value) for field, value in message.ListFields())
+        if required_fields is None:
+            required_fields = self.required_fields
+
+        for field_name in required_fields:
+            if '.' in field_name:
+                container_name, path = field_name.split('.', 1)
+                container = field_dict.get(container_name)
+                if not container:
+                    self.note_field_error(field_name, 'MISSING')
+                    continue
+                else:
+                    self._validate_required_fields(container, required_fields=[path])
+                    continue
             try:
                 if not message.HasField(field_name):
                     self.note_field_error(field_name, 'MISSING')
@@ -102,6 +115,14 @@ class Action(object):
                         self.note_field_error(field_name, 'MISSING')
                 except TypeError:
                     self.note_field_error(field_name, 'MISSING')
+
+    def validate_message(self, message, prefix=''):
+        if not prefix:
+            self._validate_required_fields(message)
+
+        # don't run type or field validators if we're missing required fields
+        if self.is_error():
+            return
 
         for field, value in message.ListFields():
             field_name = self.add_prefix(prefix, field.name)
