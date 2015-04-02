@@ -107,7 +107,7 @@ class Action(object):
                     self._validate_required_fields(
                         container,
                         required_fields=[path],
-                        prefix=contaienr_name,
+                        prefix=container_name,
                     )
                     continue
             try:
