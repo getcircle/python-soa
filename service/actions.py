@@ -97,7 +97,10 @@ class Action(object):
             required_fields = self.required_fields
 
         for field_name in required_fields:
-            full_name = '%s.%s' % (prefix, field_name)
+            full_name = field_name
+            if prefix:
+                full_name = '%s.%s' % (prefix, field_name)
+
             if '.' in field_name:
                 container_name, path = field_name.split('.', 1)
                 container = field_dict.get(container_name)
