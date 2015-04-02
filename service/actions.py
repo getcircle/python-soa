@@ -97,11 +97,12 @@ class Action(object):
             required_fields = self.required_fields
 
         for field_name in required_fields:
+            full_name = '%s.%s' % (prefix, field_name)
             if '.' in field_name:
                 container_name, path = field_name.split('.', 1)
                 container = field_dict.get(container_name)
                 if not container:
-                    self.note_field_error(field_name, 'MISSING')
+                    self.note_field_error(full_name, 'MISSING')
                     continue
                 else:
                     self._validate_required_fields(
@@ -112,13 +113,13 @@ class Action(object):
                     continue
             try:
                 if not message.HasField(field_name):
-                    self.note_field_error(field_name, 'MISSING')
+                    self.note_field_error(full_name, 'MISSING')
             except ValueError:
                 try:
                     if not len(getattr(message, field_name, [])):
-                        self.note_field_error(field_name, 'MISSING')
+                        self.note_field_error(full_name, 'MISSING')
                 except TypeError:
-                    self.note_field_error(field_name, 'MISSING')
+                    self.note_field_error(full_name, 'MISSING')
 
     def validate_message(self, message, prefix=''):
         if not prefix:
