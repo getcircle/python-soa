@@ -5,11 +5,11 @@ from .. import exceptions
 class BaseTransport(object):
 
     def send_request(self, service_request):
-        if not isinstance(service_request, soa_pb2.ServiceRequest):
+        if not isinstance(service_request, soa_pb2.ServiceRequestV1):
             raise exceptions.InvalidServiceRequest(service_request)
 
         serialized_response = self.handle_request(service_request)
-        return soa_pb2.ServiceResponse.FromString(serialized_response)
+        return soa_pb2.ServiceResponseV1.FromString(serialized_response)
 
     def handle_request(self, service_request):
         serialized_request = service_request.SerializeToString()

@@ -126,7 +126,7 @@ class Client(object):
                 raise exceptions.RogueParameter(key)
 
     def _build_request(self, action_name, **params):
-        service_request = soa_pb2.ServiceRequest()
+        service_request = soa_pb2.ServiceRequestV1()
         service_request.control.service = self.service_name
         if self.token is not None:
             service_request.control.token = self.token
@@ -190,10 +190,10 @@ class Server(object):
 
     def _handle_request(self, serialized_request):
         with metrics.time('service.request.deserialization.time'):
-            service_request = soa_pb2.ServiceRequest.FromString(serialized_request)
+            service_request = soa_pb2.ServiceRequestV1.FromString(serialized_request)
 
         self.record_message_received(service_request)
-        service_response = soa_pb2.ServiceResponse()
+        service_response = soa_pb2.ServiceResponseV1()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
             action_class = self.actions.get(action_request.control.action)
