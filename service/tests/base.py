@@ -71,8 +71,8 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         service.control.set_protobufs_request_registry(
-            'service.protobufs.tests.request_registry_pb2',
+            'service.protobufs.tests.registry.requests_pb2',
         )
         service.control.set_protobufs_response_registry(
-            'service.protobufs.tests.response_registry_pb2',
+            'service.protobufs.tests.registry.responses_pb2',
         )

@@ -1,4 +1,4 @@
-package tests.response.registry;
+package tests.registry.responses;
 
 import "service_protobufs/soa.proto";
 
@@ -9,7 +9,7 @@ import "service/protobufs/tests/simple_service/required_fields_action.proto";
 import "service/protobufs/tests/simple_service/simple_action.proto";
 
 
-message SimpleServiceResponses {
+message SimpleService {
     extend soa.ActionResultV1 {
         optional another_action.Response another_action = 101;
         optional simple_action.Response simple_action = 102;
