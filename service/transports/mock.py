@@ -84,7 +84,7 @@ class MockTransport(BaseTransport):
             raise Exception('Unrecognized mock request: %s' % (mock_key,))
 
     def process_request(self, service_request, serialized_request):
-        service_response = soa_pb2.ServiceResponse()
+        service_response = soa_pb2.ServiceResponseV1()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
             mock_response, is_action_response = self.get_mock_response(action_request)
@@ -100,7 +100,7 @@ class MockTransport(BaseTransport):
 
 
 def get_mockable_action_response(service_name, action_name):
-    action_response = soa_pb2.ActionResponse()
+    action_response = soa_pb2.ActionResponseV1()
     action_response.control.service = service_name
     action_response.control.action = action_name
     return action_response
