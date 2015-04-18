@@ -24,7 +24,7 @@ import service.protobufs.tests.simple_service.simple_action_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service/protobufs/tests/registry/responses.proto',
   package='tests.registry.responses',
-  serialized_pb=_b('\n0service/protobufs/tests/registry/responses.proto\x12\x18tests.registry.responses\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a=service/protobufs/tests/simple_service/exception_action.proto\x1a=service/protobufs/tests/simple_service/paginated_action.proto\x1a\x43service/protobufs/tests/simple_service/required_fields_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\x88\x03\n\rSimpleService2E\n\x0e\x61nother_action\x12\x13.soa.ActionResultV1\x18\x65 \x01(\x0b\x32\x18.another_action.Response2C\n\rsimple_action\x12\x13.soa.ActionResultV1\x18\x66 \x01(\x0b\x32\x17.simple_action.Response2I\n\x10paginated_action\x12\x13.soa.ActionResultV1\x18g \x01(\x0b\x32\x1a.paginated_action.Response2I\n\x10\x65xception_action\x12\x13.soa.ActionResultV1\x18h \x01(\x0b\x32\x1a.exception_action.Response2U\n\x16required_fields_action\x12\x13.soa.ActionResultV1\x18i \x01(\x0b\x32 .required_fields_action.Response')
+  serialized_pb=_b('\n0service/protobufs/tests/registry/responses.proto\x12\x18tests.registry.responses\x1a\x1bservice_protobufs/soa.proto\x1a;service/protobufs/tests/simple_service/another_action.proto\x1a=service/protobufs/tests/simple_service/exception_action.proto\x1a=service/protobufs/tests/simple_service/paginated_action.proto\x1a\x43service/protobufs/tests/simple_service/required_fields_action.proto\x1a:service/protobufs/tests/simple_service/simple_action.proto\"\x81\x03\n\x06Simple2E\n\x0e\x61nother_action\x12\x13.soa.ActionResultV1\x18\x65 \x01(\x0b\x32\x18.another_action.Response2C\n\rsimple_action\x12\x13.soa.ActionResultV1\x18\x66 \x01(\x0b\x32\x17.simple_action.Response2I\n\x10paginated_action\x12\x13.soa.ActionResultV1\x18g \x01(\x0b\x32\x1a.paginated_action.Response2I\n\x10\x65xception_action\x12\x13.soa.ActionResultV1\x18h \x01(\x0b\x32\x1a.exception_action.Response2U\n\x16required_fields_action\x12\x13.soa.ActionResultV1\x18i \x01(\x0b\x32 .required_fields_action.Response')
   ,
   dependencies=[service_protobufs.soa_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.another_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.exception_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.paginated_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.required_fields_action_pb2.DESCRIPTOR,service.protobufs.tests.simple_service.simple_action_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -32,9 +32,9 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
-_SIMPLESERVICE = _descriptor.Descriptor(
-  name='SimpleService',
-  full_name='tests.registry.responses.SimpleService',
+_SIMPLE = _descriptor.Descriptor(
+  name='Simple',
+  full_name='tests.registry.responses.Simple',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -42,35 +42,35 @@ _SIMPLESERVICE = _descriptor.Descriptor(
   ],
   extensions=[
     _descriptor.FieldDescriptor(
-      name='another_action', full_name='tests.registry.responses.SimpleService.another_action', index=0,
+      name='another_action', full_name='tests.registry.responses.Simple.another_action', index=0,
       number=101, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='simple_action', full_name='tests.registry.responses.SimpleService.simple_action', index=1,
+      name='simple_action', full_name='tests.registry.responses.Simple.simple_action', index=1,
       number=102, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='paginated_action', full_name='tests.registry.responses.SimpleService.paginated_action', index=2,
+      name='paginated_action', full_name='tests.registry.responses.Simple.paginated_action', index=2,
       number=103, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='exception_action', full_name='tests.registry.responses.SimpleService.exception_action', index=3,
+      name='exception_action', full_name='tests.registry.responses.Simple.exception_action', index=3,
       number=104, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=True, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='required_fields_action', full_name='tests.registry.responses.SimpleService.required_fields_action', index=4,
+      name='required_fields_action', full_name='tests.registry.responses.Simple.required_fields_action', index=4,
       number=105, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -86,27 +86,27 @@ _SIMPLESERVICE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=424,
-  serialized_end=816,
+  serialized_end=809,
 )
 
-DESCRIPTOR.message_types_by_name['SimpleService'] = _SIMPLESERVICE
+DESCRIPTOR.message_types_by_name['Simple'] = _SIMPLE
 
-SimpleService = _reflection.GeneratedProtocolMessageType('SimpleService', (_message.Message,), dict(
-  DESCRIPTOR = _SIMPLESERVICE,
+Simple = _reflection.GeneratedProtocolMessageType('Simple', (_message.Message,), dict(
+  DESCRIPTOR = _SIMPLE,
   __module__ = 'service.protobufs.tests.registry.responses_pb2'
-  # @@protoc_insertion_point(class_scope:tests.registry.responses.SimpleService)
+  # @@protoc_insertion_point(class_scope:tests.registry.responses.Simple)
   ))
-_sym_db.RegisterMessage(SimpleService)
+_sym_db.RegisterMessage(Simple)
 
-_SIMPLESERVICE.extensions_by_name['another_action'].message_type = service.protobufs.tests.simple_service.another_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLESERVICE.extensions_by_name['another_action'])
-_SIMPLESERVICE.extensions_by_name['simple_action'].message_type = service.protobufs.tests.simple_service.simple_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLESERVICE.extensions_by_name['simple_action'])
-_SIMPLESERVICE.extensions_by_name['paginated_action'].message_type = service.protobufs.tests.simple_service.paginated_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLESERVICE.extensions_by_name['paginated_action'])
-_SIMPLESERVICE.extensions_by_name['exception_action'].message_type = service.protobufs.tests.simple_service.exception_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLESERVICE.extensions_by_name['exception_action'])
-_SIMPLESERVICE.extensions_by_name['required_fields_action'].message_type = service.protobufs.tests.simple_service.required_fields_action_pb2._RESPONSE
-service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLESERVICE.extensions_by_name['required_fields_action'])
+_SIMPLE.extensions_by_name['another_action'].message_type = service.protobufs.tests.simple_service.another_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLE.extensions_by_name['another_action'])
+_SIMPLE.extensions_by_name['simple_action'].message_type = service.protobufs.tests.simple_service.simple_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLE.extensions_by_name['simple_action'])
+_SIMPLE.extensions_by_name['paginated_action'].message_type = service.protobufs.tests.simple_service.paginated_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLE.extensions_by_name['paginated_action'])
+_SIMPLE.extensions_by_name['exception_action'].message_type = service.protobufs.tests.simple_service.exception_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLE.extensions_by_name['exception_action'])
+_SIMPLE.extensions_by_name['required_fields_action'].message_type = service.protobufs.tests.simple_service.required_fields_action_pb2._RESPONSE
+service_protobufs.soa_pb2.ActionResultV1.RegisterExtension(_SIMPLE.extensions_by_name['required_fields_action'])
 
 # @@protoc_insertion_point(module_scope)

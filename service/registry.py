@@ -12,7 +12,7 @@ class ProtobufRegistry(object):
         self._registry_path = registry_path
 
     def get_registry_service_name(self, service_name):
-        return '%sService' % (service_name.title(),)
+        return service_name.title()
 
     @property
     def registry(self):
