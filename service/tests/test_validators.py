@@ -35,7 +35,7 @@ class TestValidators(base.TestCase):
         service.control.unlocalize_server(SampleServer)
 
     def test_failed_type_validator_results_in_error(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'simple_action',
                 user_id='12321313',
@@ -51,7 +51,7 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_type_validators_doesnt_run_feild_validators(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'simple_action',
                 echo='foo',
@@ -68,7 +68,7 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'INVALID')
 
     def test_failed_field_validator_results_in_error(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'simple_action',
                 echo='boo',
@@ -84,7 +84,7 @@ class TestValidators(base.TestCase):
         self.assertEqual(error_detail.detail, 'Must be excited')
 
     def test_is_uuid4_validates_uuid(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'simple_action',
                 user_id='123123123',

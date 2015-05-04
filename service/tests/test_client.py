@@ -137,7 +137,7 @@ class TestClient(base.TestCase):
         self.assertFalse(response.control.paginator.HasField('previous_page'))
 
     def test_client_call_action_over_max_page(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'paginated_action',
                 echo='echo',
@@ -182,7 +182,7 @@ class TestAuthExemptActions(base.TestCase):
         self.assertEqual(response.result.answer, 'echo!')
 
     def test_client_non_auth_exempt_action(self):
-        with self.assertRaises(self.client.CallActionError) as expected:
+        with self.assertRaises(service.control.CallActionError) as expected:
             self.client.call_action(
                 'another_action',
                 test='test',

@@ -43,30 +43,31 @@ class Response(object):
         return self._extension_response
 
 
+class CallActionError(Exception):
+    def __init__(self, response, *args, **kwargs):
+        self.response = response
+        super(CallActionError, self).__init__(self.summary, *args, **kwargs)
+
+    @property
+    def summary(self):
+        return 'ERROR: %s.%s\n%s' % (
+            self.response.control.service,
+            self.response.control.action,
+            self.generate_error_summary(),
+        )
+
+    def generate_error_summary(self):
+        summary = ''
+        if self.response.errors:
+            summary += 'errors: %s\n' % ('\n  -'.join(self.response.errors))
+        if self.response.error_details:
+            summaries = ['%s:%s:%s' % (detail.error, detail.key, detail.detail) for detail
+                         in self.response.error_details]
+            summary += 'error_details: %s\n' % ('\n   -'.join(summaries))
+        return summary
+
+
 class Client(object):
-
-    class CallActionError(Exception):
-        def __init__(self, response, *args, **kwargs):
-            self.response = response
-            super(Client.CallActionError, self).__init__(self.summary, *args, **kwargs)
-
-        @property
-        def summary(self):
-            return 'ERROR: %s.%s\n%s' % (
-                self.response.control.service,
-                self.response.control.action,
-                self.generate_error_summary(),
-            )
-
-        def generate_error_summary(self):
-            summary = ''
-            if self.response.errors:
-                summary += 'errors: %s\n' % ('\n  -'.join(self.response.errors))
-            if self.response.error_details:
-                summaries = ['%s:%s:%s' % (detail.error, detail.key, detail.detail) for detail
-                             in self.response.error_details]
-                summary += 'error_details: %s\n' % ('\n   -'.join(summaries))
-            return summary
 
     def __init__(self, service_name, post_call_action_hook=None, token=None):
         self.service_name = service_name
@@ -159,7 +160,7 @@ class Client(object):
         if not response_wrapper.success:
             if isinstance(on_error, Exception):
                 raise on_error
-            raise Client.CallActionError(response_wrapper)
+            raise CallActionError(response_wrapper)
 
         return response_wrapper
 
