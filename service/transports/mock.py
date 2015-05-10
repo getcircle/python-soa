@@ -51,7 +51,10 @@ class MockTransport(BaseTransport):
             **params
         ):
         mock_response = get_mockable_response(service, action)
-        setattr(mock_response, return_object_path, return_object)
+        if hasattr(getattr(mock_response, return_object_path), 'CopyFrom'):
+            getattr(mock_response, return_object_path).CopyFrom(return_object)
+        else:
+            setattr(mock_response, return_object_path, return_object)
         self.register_mock_response(
             service,
             action,
