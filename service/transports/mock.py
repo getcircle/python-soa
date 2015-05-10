@@ -50,7 +50,7 @@ class MockTransport(BaseTransport):
             mock_regex_lookup=None,
             **params
         ):
-        mock_response = self.get_mockable_response(service, action)
+        mock_response = get_mockable_response(service, action)
         setattr(mock_response, return_object_path, return_object)
         self.register_mock_response(
             service,
