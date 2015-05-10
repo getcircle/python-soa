@@ -53,6 +53,8 @@ class MockTransport(BaseTransport):
         mock_response = get_mockable_response(service, action)
         if hasattr(getattr(mock_response, return_object_path), 'CopyFrom'):
             getattr(mock_response, return_object_path).CopyFrom(return_object)
+        elif hasattr(getattr(mock_response, return_object_path), 'extend'):
+            getattr(mock_response, return_object_path).extend(return_object)
         else:
             setattr(mock_response, return_object_path, return_object)
         self.register_mock_response(
