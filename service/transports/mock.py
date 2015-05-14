@@ -41,6 +41,10 @@ class MockTransport(BaseTransport):
             self._get_params_hash(params),
         )
 
+    def clear(self):
+        self.mock_responses = {}
+        self.mock_regex_lookups = {}
+
     def register_mock_object(
             self,
             service,
