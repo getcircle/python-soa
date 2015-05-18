@@ -279,7 +279,13 @@ def get_response_extension(action_response):
     return action_response.result.Extensions[extension]
 
 
-def get_object(service, client_kwargs, action, action_kwargs, return_object):
+def get_object(service, action, return_object, client_kwargs=None, action_kwargs=None):
+    if client_kwargs is None:
+        client_kwargs = {}
+
+    if action_kwargs is None:
+        action_kwargs = {}
+
     client = Client(service, **client_kwargs)
     response = client.call_action(action, **action_kwargs)
     return getattr(response.result, return_object)
