@@ -8,6 +8,7 @@ from service_protobufs import soa_pb2
 
 from .. import control
 from .base import BaseTransport
+from .local import instance as local_instance
 
 
 class MockTransport(BaseTransport):
@@ -16,6 +17,7 @@ class MockTransport(BaseTransport):
         super(MockTransport, self).__init__(*args, **kwargs)
         self.mock_responses = {}
         self.mock_regex_lookups = {}
+        self._dont_mock_services = []
 
     def _get_params_hash(self, params):
         ordered_params = sorted(params.items(), key=lambda x: x[0])
@@ -44,6 +46,9 @@ class MockTransport(BaseTransport):
     def clear(self):
         self.mock_responses = {}
         self.mock_regex_lookups = {}
+
+    def dont_mock_service(self, service):
+        self._dont_mock_services.append(service)
 
     def register_mock_object(
             self,
@@ -112,6 +117,9 @@ class MockTransport(BaseTransport):
             raise Exception('Unrecognized mock request: %s' % (mock_key,))
 
     def process_request(self, service_request, serialized_request):
+        if service_request.control.service in self._dont_mock_services:
+            return local_instance.process_request(service_request, serialized_request)
+
         service_response = soa_pb2.ServiceResponseV1()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
