@@ -3,7 +3,10 @@ from md5 import md5
 import re
 
 from google.protobuf import message
-from protobuf_to_dict import protobuf_to_dict
+from protobuf_to_dict import (
+    dict_to_protobuf,
+    protobuf_to_dict,
+)
 from service_protobufs import soa_pb2
 
 from .. import control
@@ -189,7 +192,9 @@ def get_mockable_call_action_error(service_name, action_name, errors=None, error
     response = get_mockable_action_response(service_name, action_name)
     response.result.success = False
     response.result.errors.extend(errors)
-    response.result.error_details.extend(error_details)
+    for error_detail in error_details:
+        container = response.result.error_details.add()
+        dict_to_protobuf(error_detail, container)
     return control.CallActionError(response)
 
 instance = MockTransport()
