@@ -58,7 +58,7 @@ class MockTransport(BaseTransport):
             mock_regex_lookup=False,
             **params
         ):
-        mock_key = self._get_mock_key(service, action, params)
+        mock_key = self._get_mock_key(service_name, action_name, params)
         self.mock_responses[mock_key] = (error, False)
         if mock_regex_lookup:
             self.mock_regex_lookups[mock_regex_lookup] = (error, False)
