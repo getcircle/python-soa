@@ -195,6 +195,6 @@ def get_mockable_call_action_error(service_name, action_name, errors=None, error
     for error_detail in error_details:
         container = response.result.error_details.add()
         dict_to_protobuf(error_detail, container)
-    return control.CallActionError(response)
+    return control.CallActionError(control.Response(response, None))
 
 instance = MockTransport()
