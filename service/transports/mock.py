@@ -188,8 +188,8 @@ def get_mockable_response(service_name, action_name):
 def get_mockable_call_action_error(service_name, action_name, errors=None, error_details=None):
     response = get_mockable_action_response(service_name, action_name)
     response.result.success = False
-    response.result.errors = errors
-    response.result.error_details = error_details
+    response.result.errors.extend(errors)
+    response.result.error_details.extend(error_details)
     return control.CallActionError(response)
 
 instance = MockTransport()
