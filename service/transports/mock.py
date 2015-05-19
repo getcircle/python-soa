@@ -186,7 +186,7 @@ def get_mockable_response(service_name, action_name):
 
 
 def get_mockable_call_action_error(service_name, action_name, errors=None, error_details=None):
-    response = get_mockable_response(service_name, action_name)
+    response = get_mockable_action_response(service_name, action_name)
     response.errors = errors
     response.error_details = error_details
     return control.CallActionError(response)
