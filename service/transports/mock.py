@@ -50,6 +50,19 @@ class MockTransport(BaseTransport):
     def dont_mock_service(self, service):
         self._dont_mock_services.append(service)
 
+    def register_mock_error(
+            self,
+            service_name,
+            action_name,
+            error,
+            mock_regex_lookup=False,
+            **params
+        ):
+        mock_key = self._get_mock_key(service, action, params)
+        self.mock_responses[mock_key] = (error, False)
+        if mock_regex_lookup:
+            self.mock_regex_lookups[mock_regex_lookup] = (error, False)
+
     def register_mock_object(
             self,
             service,
@@ -127,6 +140,8 @@ class MockTransport(BaseTransport):
             action_response = service_response.actions.add()
             if is_action_response:
                 action_response.CopyFrom(mock_response)
+            elif isinstance(mock_response, Exception):
+                raise mock_response
             else:
                 action_response.control.CopyFrom(action_request.control)
                 action_response.result.success = True
@@ -145,5 +160,12 @@ def get_mockable_action_response(service_name, action_name):
 def get_mockable_response(service_name, action_name):
     action_response = get_mockable_action_response(service_name, action_name)
     return control.get_response_extension(action_response)
+
+
+def get_mockable_call_action_error(service_name, action_name, errors=None, error_details=None):
+    response = get_mockable_response(service_name, action_name)
+    response.errors = errors
+    response.error_details = error_details
+    return control.CallActionError(response)
 
 instance = MockTransport()
