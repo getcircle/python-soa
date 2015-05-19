@@ -63,6 +63,29 @@ class MockTransport(BaseTransport):
         if mock_regex_lookup:
             self.mock_regex_lookups[mock_regex_lookup] = (error, False)
 
+    def register_mock_call_action_error(
+            self,
+            service_name,
+            action_name,
+            errors=None,
+            error_details=None,
+            mock_regex_lookup=False,
+            **params
+        ):
+        error = get_mockable_call_action_error(
+            service_name=service_name,
+            action_name=action_name,
+            errors=errors,
+            error_details=error_details,
+        )
+        self.register_mock_error(
+            service_name=service_name,
+            action_name=action_name,
+            error=error,
+            mock_regex_lookup=mock_regex_lookup,
+            **params
+        )
+
     def register_mock_object(
             self,
             service,
