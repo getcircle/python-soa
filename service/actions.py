@@ -19,7 +19,7 @@ class Action(object):
             self.error_message = error_message
             super(Action.ActionFieldError, self).__init__(*args, **kwargs)
 
-    class PermissionDeniedError(ActionError):
+    class PermissionDenied(ActionError):
         def __init__(self, *args, **kwargs):
             error = 'PERMISSION_DENIED'
             details = ('PERMISSION_DENIED', 'permission denied')
