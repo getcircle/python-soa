@@ -23,7 +23,7 @@ class Action(object):
         def __init__(self, *args, **kwargs):
             error = 'PERMISSION_DENIED'
             details = ('PERMISSION_DENIED', 'permission denied')
-            super(Action.PermissionDeniedError, self).__init__(error, details, *args, **kwargs)
+            super(Action.PermissionDenied, self).__init__(error, details, *args, **kwargs)
 
     type_validators = None
     field_validators = None
