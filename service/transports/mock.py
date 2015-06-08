@@ -89,6 +89,16 @@ class MockTransport(BaseTransport):
             **params
         )
 
+    def register_empty_response(self, service, action, mock_regex_lookup=None, **params):
+        mock_response = get_mockable_response(service, action)
+        self.register_mock_response(
+            service,
+            action,
+            mock_response,
+            mock_regex_lookup=mock_regex_lookup,
+            **params
+        )
+
     def register_mock_object(
             self,
             service,
