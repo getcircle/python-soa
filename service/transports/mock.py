@@ -49,6 +49,7 @@ class MockTransport(BaseTransport):
     def clear(self):
         self.mock_responses = {}
         self.mock_regex_lookups = {}
+        self._dont_mock_services = []
 
     def dont_mock_service(self, service):
         self._dont_mock_services.append(service)
