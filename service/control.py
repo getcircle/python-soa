@@ -164,8 +164,8 @@ class Client(object):
 
         return response_wrapper
 
-    def get_object(self, service, action, return_object, **action_kwargs):
-        response = self.call_action(service, action, **action_kwargs)
+    def get_object(self, action_name, return_object, **action_kwargs):
+        response = self.call_action(action_name, **action_kwargs)
         return getattr(response.result, return_object)
 
 
