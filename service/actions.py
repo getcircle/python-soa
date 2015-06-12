@@ -207,20 +207,7 @@ class Action(object):
             page = self.get_page(paginator)
         for item in page.object_list:
             transport_func(item, repeated_container)
-        self.update_paginator(paginator, page)
-
-    def update_paginator(self, paginator, page):
-        self.control.paginator.count = paginator.count
-        self.control.paginator.total_pages = paginator.num_pages
-        if page.has_next():
-            self.control.paginator.next_page = page.next_page_number()
-        else:
-            self.control.paginator.ClearField('next_page')
-
-        if page.has_previous():
-            self.control.paginator.previous_page = page.previous_page_number()
-        else:
-            self.control.paginator.ClearField('previous_page')
+        service.control.update_paginator_protobuf(self.control.paginator, paginator, page)
 
     def run(self, *args, **kwargs):
         raise NotImplementedError('Action must define `run` method')

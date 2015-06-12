@@ -292,3 +292,17 @@ def call_action(service, action, client_kwargs=None, **action_kwargs):
     client_kwargs = client_kwargs or {}
     client = Client(service, **client_kwargs)
     return client.call_action(action, **action_kwargs)
+
+
+def update_paginator_protobuf(protobuf, paginator, page):
+    protobuf.count = paginator.count
+    protobuf.total_pages = paginator.num_pages
+    if page.has_next():
+        protobuf.next_page = page.next_page_number()
+    else:
+        protobuf.ClearField('next_page')
+
+    if page.has_previous():
+        protobuf.previous_page = page.previous_page_number()
+    else:
+        protobuf.ClearField('previous_page')
