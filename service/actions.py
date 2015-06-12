@@ -207,7 +207,9 @@ class Action(object):
             page = self.get_page(paginator)
         for item in page.object_list:
             transport_func(item, repeated_container)
+        self.update_paginator(paginator, page)
 
+    def update_paginator(self, paginator, page):
         self.control.paginator.count = paginator.count
         self.control.paginator.total_pages = paginator.num_pages
         if page.has_next():
