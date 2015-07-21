@@ -164,7 +164,7 @@ class MockTransport(BaseTransport):
             for regex, mock_response in self.mock_regex_lookups.iteritems():
                 if re.match(regex, mock_key):
                     return mock_response
-            raise Exception('Unrecognized mock request: %s' % (mock_key,))
+            raise Exception('Unrecognized mock request: %s\nparams:%s' % (mock_key, params))
 
     def process_request(self, service_request, serialized_request):
         if service_request.control.service in self._dont_mock_services:
