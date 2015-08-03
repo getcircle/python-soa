@@ -288,10 +288,10 @@ def get_object(service, action, return_object, client_kwargs=None, **action_kwar
     return getattr(response.result, return_object)
 
 
-def call_action(service, action, client_kwargs=None, **action_kwargs):
+def call_action(service, action_name, client_kwargs=None, **action_kwargs):
     client_kwargs = client_kwargs or {}
     client = Client(service, **client_kwargs)
-    return client.call_action(action, **action_kwargs)
+    return client.call_action(action_name, **action_kwargs)
 
 
 def update_paginator_protobuf(protobuf, paginator, page):
