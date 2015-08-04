@@ -14,10 +14,9 @@ class Action(object):
             super(Action.ActionError, self).__init__(*args, **kwargs)
 
     class ActionFieldError(Exception):
-        def __init__(self, field_name, error_message, details=None, *args, **kwargs):
+        def __init__(self, field_name, error_message, *args, **kwargs):
             self.field_name = field_name
             self.error_message = error_message
-            self.details = details
             super(Action.ActionFieldError, self).__init__(*args, **kwargs)
 
     class PermissionDenied(ActionError):
@@ -67,8 +66,8 @@ class Action(object):
             error_detail.key = details[0]
             error_detail.detail = details[1]
 
-    def note_field_error(self, field_name, error_message, details=None):
-        self.note_error('FIELD_ERROR', (field_name, error_message), details=details)
+    def note_field_error(self, field_name, error_message):
+        self.note_error('FIELD_ERROR', (field_name, error_message))
 
     def is_error(self):
         return bool(self._errors)
@@ -168,7 +167,7 @@ class Action(object):
                 self.run(*args, **kwargs)
                 self.post_run()
         except self.ActionFieldError as e:
-            self.note_field_error(e.field_name, e.error_message, details=e.details)
+            self.note_field_error(e.field_name, e.error_message)
         except self.ActionError as e:
             self.note_error(e.error, e.details)
         except Exception as e:
