@@ -187,6 +187,12 @@ class MockTransport(BaseTransport):
         return service_response.SerializeToString()
 
 
+def get_mockable_action_response_and_extension(service_name, action_name):
+    action_response = get_mockable_action_response(service_name, action_name)
+    extension = control.get_response_extension(action_response)
+    return action_response, extension
+
+
 def get_mockable_action_response(service_name, action_name):
     action_response = soa_pb2.ActionResponseV1()
     action_response.control.service = service_name
@@ -195,8 +201,11 @@ def get_mockable_action_response(service_name, action_name):
 
 
 def get_mockable_response(service_name, action_name):
-    action_response = get_mockable_action_response(service_name, action_name)
-    return control.get_response_extension(action_response)
+    action_response, extension = get_mockable_action_response_and_extension(
+        service_name,
+        action_name,
+    )
+    return extension
 
 
 def get_mockable_call_action_error(service_name, action_name, errors=None, error_details=None):
