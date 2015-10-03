@@ -4,8 +4,11 @@ from .base import BaseTransport
 
 class HttpsTransport(BaseTransport):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, client=None, *args, **kwargs):
         super(HttpsTransport, self).__init__(*args, **kwargs)
+        if client is None:
+            client = requests
+        self.client = requests
         self.endpoint_map = {}
 
     def process_request(self, service_request, serialized_request):
@@ -16,7 +19,7 @@ class HttpsTransport(BaseTransport):
                 service_request.control.token,
             )
 
-        response = requests.post(
+        response = self.client.post(
             endpoint,
             data=serialized_request,
             headers=headers,
