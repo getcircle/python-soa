@@ -8,7 +8,7 @@ class HttpsTransport(BaseTransport):
         super(HttpsTransport, self).__init__()
         if client is None:
             client = requests
-        self.client = requests
+        self.client = client
         self.endpoint_map = {}
 
     def process_request(self, service_request, serialized_request):
