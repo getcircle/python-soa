@@ -5,7 +5,7 @@ from .base import BaseTransport
 class HttpsTransport(BaseTransport):
 
     def __init__(self, client=None, *args, **kwargs):
-        super(HttpsTransport, self).__init__(*args, **kwargs)
+        super(HttpsTransport, self).__init__()
         if client is None:
             client = requests
         self.client = requests
