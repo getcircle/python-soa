@@ -194,10 +194,12 @@ class Server(object):
         return self._logger
 
     def record_message_received(self, service_request):
-        self.logger.info('recv: %s', protobuf_to_dict(service_request))
+        if settings.LOG_REQUEST_AND_RESPONSE:
+            self.logger.info('recv: %s', protobuf_to_dict(service_request))
 
     def record_message_sent(self, service_response):
-        self.logger.info('sent: %s', protobuf_to_dict(service_response))
+        if settings.LOG_REQUEST_AND_RESPONSE:
+            self.logger.info('sent: %s', protobuf_to_dict(service_response))
 
     @metrics.count('service.request.count')
     @metrics.time('service.response.time')
