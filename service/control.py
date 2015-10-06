@@ -44,17 +44,25 @@ class Response(object):
 
 
 class CallActionError(Exception):
-    def __init__(self, response, *args, **kwargs):
+    def __init__(self, response=None, service_response=None, exception=None, *args, **kwargs):
         self.response = response
+        self.service_response = service_response
+        self.exception = exception
         super(CallActionError, self).__init__(self.summary, *args, **kwargs)
 
     @property
     def summary(self):
-        return 'ERROR: %s.%s\n%s' % (
-            self.response.control.service,
-            self.response.control.action,
-            self.generate_error_summary(),
-        )
+        if self.response:
+            return 'ERROR: %s.%s\n%s' % (
+                self.response.control.service,
+                self.response.control.action,
+                self.generate_error_summary(),
+            )
+        elif self.service_response:
+            return 'ERROR: %s:%s' % (
+                self.response.control.service,
+                str(self.exception),
+            )
 
     def generate_error_summary(self):
         summary = ''
@@ -153,7 +161,11 @@ class Client(object):
             self.service_name,
             action_name,
         )
-        action_response = service_response.actions[0]
+        try:
+            action_response = service_response.actions[0]
+        except IndexError as e:
+            raise CallActionError(service_response=service_response, exception=e)
+
         extension_response = action_response.result.Extensions[extension]
         response_wrapper = Response(action_response, extension_response)
         self._post_call_action_hook(response_wrapper)
