@@ -60,7 +60,7 @@ class CallActionError(Exception):
             )
         elif self.service_response:
             return 'ERROR: %s:%s' % (
-                self.response.control.service,
+                self.service_response.control.service,
                 str(self.exception),
             )
 
