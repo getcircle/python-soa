@@ -154,12 +154,12 @@ class Client(object):
         self._copy_params_to_protobuf(params, request)
         return service_request
 
-    def call_action(self, action_name, on_error=None, **params):
-        service_request = self._build_request(action_name, **params)
+    def call_action(self, action, on_error=None, **params):
+        service_request = self._build_request(action, **params)
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(
             self.service_name,
-            action_name,
+            action,
         )
         try:
             action_response = service_response.actions[0]
@@ -302,10 +302,10 @@ def get_object(service, action, return_object, client_kwargs=None, **action_kwar
     return getattr(response.result, return_object)
 
 
-def call_action(service, action_name, client_kwargs=None, **action_kwargs):
+def call_action(service, action, client_kwargs=None, **action_kwargs):
     client_kwargs = client_kwargs or {}
     client = Client(service, **client_kwargs)
-    return client.call_action(action_name, **action_kwargs)
+    return client.call_action(action, **action_kwargs)
 
 
 def update_paginator_protobuf(protobuf, paginator, page):
