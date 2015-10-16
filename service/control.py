@@ -177,8 +177,8 @@ class Client(object):
         service_request = self._build_request(action, **params)
         return self._send_request(action, service_request, on_error=on_error)
 
-    def call(self, action, action_parameters, on_error=None):
-        service_request = self._build_request(action, **action_parameters)
+    def call(self, action, action_kwargs, on_error=None):
+        service_request = self._build_request(action, **action_kwargs)
         return self._send_request(action, service_request, on_error=on_error)
 
     def get_object(self, action, return_object, **action_kwargs):
