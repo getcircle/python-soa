@@ -154,8 +154,7 @@ class Client(object):
         self._copy_params_to_protobuf(params, request)
         return service_request
 
-    def call_action(self, action, on_error=None, **params):
-        service_request = self._build_request(action, **params)
+    def _send_request(self, action, service_request, on_error=None):
         service_response = self.transport.send_request(service_request)
         extension = registry.response_registry.get_extension(
             self.service_name,
@@ -174,7 +173,13 @@ class Client(object):
                 raise on_error
             raise CallActionError(response_wrapper)
 
-        return response_wrapper
+    def call_action(self, action, on_error=None, **params):
+        service_request = self._build_request(action, **params)
+        return self._send_request(action, service_request, on_error=on_error)
+
+    def call_action_name(self, action_name, on_error=None, **params):
+        service_request = self._build_request(action_name, **params)
+        return self._send_request(action_name, service_request, on_error=on_error)
 
     def get_object(self, action, return_object, **action_kwargs):
         response = self.call_action(action, **action_kwargs)
