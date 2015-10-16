@@ -177,9 +177,9 @@ class Client(object):
         service_request = self._build_request(action, **params)
         return self._send_request(action, service_request, on_error=on_error)
 
-    def call_action_name(self, action_name, on_error=None, **params):
-        service_request = self._build_request(action_name, **params)
-        return self._send_request(action_name, service_request, on_error=on_error)
+    def call(self, action, action_parameters, on_error=None):
+        service_request = self._build_request(action, **action_parameters)
+        return self._send_request(action, service_request, on_error=on_error)
 
     def get_object(self, action, return_object, **action_kwargs):
         response = self.call_action(action, **action_kwargs)
@@ -311,6 +311,12 @@ def call_action(service, action, client_kwargs=None, **action_kwargs):
     client_kwargs = client_kwargs or {}
     client = Client(service, **client_kwargs)
     return client.call_action(action, **action_kwargs)
+
+
+def call(service, action, client_kwargs, action_kwargs):
+    client_kwargs = client_kwargs or {}
+    client = Client(service, **client_kwargs)
+    return client.call(action, action_kwargs)
 
 
 def update_paginator_protobuf(protobuf, paginator, page):
