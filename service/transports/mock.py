@@ -39,10 +39,10 @@ class MockTransport(BaseTransport):
         result = md5(json.dumps(serializable)).hexdigest()
         return result
 
-    def _get_mock_key(self, service_name, action_name, params):
+    def _get_mock_key(self, service, action, params):
         return '%s:%s:%s' % (
-            service_name,
-            action_name,
+            service,
+            action,
             self._get_params_hash(params),
         )
 
@@ -56,35 +56,35 @@ class MockTransport(BaseTransport):
 
     def register_mock_error(
             self,
-            service_name,
-            action_name,
+            service,
+            action,
             error,
             mock_regex_lookup=False,
             **params
         ):
-        mock_key = self._get_mock_key(service_name, action_name, params)
+        mock_key = self._get_mock_key(service, action, params)
         self.mock_responses[mock_key] = (error, False)
         if mock_regex_lookup:
             self.mock_regex_lookups[mock_regex_lookup] = (error, False)
 
     def register_mock_call_action_error(
             self,
-            service_name,
-            action_name,
+            service,
+            action,
             errors=None,
             error_details=None,
             mock_regex_lookup=False,
             **params
         ):
         error = get_mockable_call_action_error(
-            service_name=service_name,
-            action_name=action_name,
+            service=service,
+            action=action,
             errors=errors,
             error_details=error_details,
         )
         self.register_mock_error(
-            service_name=service_name,
-            action_name=action_name,
+            service=service,
+            action=action,
             error=error,
             mock_regex_lookup=mock_regex_lookup,
             **params
@@ -126,26 +126,26 @@ class MockTransport(BaseTransport):
 
     def register_mock_response(
             self,
-            service_name,
-            action_name,
+            service,
+            action,
             mock_response,
             mock_regex_lookup=None,
             is_action_response=False,
             **params
         ):
-        mock_key = self._get_mock_key(service_name, action_name, params)
+        mock_key = self._get_mock_key(service, action, params)
         self.mock_responses[mock_key] = (mock_response, is_action_response)
         if mock_regex_lookup:
             self.mock_regex_lookups[mock_regex_lookup] = (mock_response, is_action_response)
 
     def unregister_mock_response(
             self,
-            service_name,
-            action_name,
+            service,
+            action,
             mock_regex_lookup=None,
             **params
         ):
-        mock_key = self._get_mock_key(service_name, action_name, params)
+        mock_key = self._get_mock_key(service, action, params)
         self.mock_responses.pop(mock_key, None)
         if mock_regex_lookup:
             self.mock_regex_lookups.pop(mock_regex_lookup, None)
@@ -187,29 +187,29 @@ class MockTransport(BaseTransport):
         return service_response.SerializeToString()
 
 
-def get_mockable_action_response_and_extension(service_name, action_name):
-    action_response = get_mockable_action_response(service_name, action_name)
+def get_mockable_action_response_and_extension(service, action):
+    action_response = get_mockable_action_response(service, action)
     extension = control.get_response_extension(action_response)
     return action_response, extension
 
 
-def get_mockable_action_response(service_name, action_name):
+def get_mockable_action_response(service, action):
     action_response = soa_pb2.ActionResponseV1()
-    action_response.control.service = service_name
-    action_response.control.action = action_name
+    action_response.control.service = service
+    action_response.control.action = action
     return action_response
 
 
-def get_mockable_response(service_name, action_name):
+def get_mockable_response(service, action):
     action_response, extension = get_mockable_action_response_and_extension(
-        service_name,
-        action_name,
+        service,
+        action,
     )
     return extension
 
 
-def get_mockable_call_action_error(service_name, action_name, errors=None, error_details=None):
-    response = get_mockable_action_response(service_name, action_name)
+def get_mockable_call_action_error(service, action, errors=None, error_details=None):
+    response = get_mockable_action_response(service, action)
     response.result.success = False
     response.result.errors.extend(errors)
     for error_detail in error_details:
