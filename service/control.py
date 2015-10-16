@@ -172,6 +172,7 @@ class Client(object):
             if isinstance(on_error, Exception):
                 raise on_error
             raise CallActionError(response_wrapper)
+        return response_wrapper
 
     def call_action(self, action, on_error=None, **params):
         service_request = self._build_request(action, **params)
