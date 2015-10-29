@@ -166,10 +166,13 @@ class MockTransport(BaseTransport):
                 if re.match(regex, mock_key):
                     return mock_response
 
-        logging.getLogger('mock').warning(
-            'Unrecognized mock request: %s\nparams: %s' % (mock_key, params)
+        logger = logging.getLogger('mock')
+        logger.warning('Unrecognized mock request: %s\nparams: %s' % (mock_key, params))
+        response = get_mockable_response(
+            action_request.control.service,
+            action_request.control.action,
         )
-        return get_mockable_response(action_request.control.service, action_request.control.action)
+        return response, False
 
     def process_request(self, service_request, serialized_request):
         if service_request.control.service in self._dont_mock_services:
