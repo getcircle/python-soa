@@ -1,4 +1,5 @@
 import json
+import logging
 from md5 import md5
 import re
 
@@ -164,7 +165,11 @@ class MockTransport(BaseTransport):
             for regex, mock_response in self.mock_regex_lookups.iteritems():
                 if re.match(regex, mock_key):
                     return mock_response
-            raise Exception('Unrecognized mock request: %s\nparams: %s' % (mock_key, params))
+
+        logging.getLogger('mock').warning(
+            'Unrecognized mock request: %s\nparams: %s' % (mock_key, params)
+        )
+        return get_mockable_response(action_request.control.service, action_request.control.action)
 
     def process_request(self, service_request, serialized_request):
         if service_request.control.service in self._dont_mock_services:
