@@ -21,7 +21,7 @@ class MockTransport(BaseTransport):
         super(MockTransport, self).__init__(*args, **kwargs)
         self.mock_responses = {}
         self.mock_regex_lookups = {}
-        self._dont_mock_services = []
+        self._dont_mock_services = set()
 
     def _get_params_hash(self, params):
         ordered_params = sorted(params.items(), key=lambda x: x[0])
@@ -50,10 +50,10 @@ class MockTransport(BaseTransport):
     def clear(self):
         self.mock_responses = {}
         self.mock_regex_lookups = {}
-        self._dont_mock_services = []
+        self._dont_mock_services = set()
 
     def dont_mock_service(self, service):
-        self._dont_mock_services.append(service)
+        self._dont_mock_services.add(service)
 
     def register_mock_error(
             self,
