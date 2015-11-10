@@ -219,10 +219,12 @@ def get_mockable_response(service, action):
 def get_mockable_call_action_error(service, action, errors=None, error_details=None):
     response = get_mockable_action_response(service, action)
     response.result.success = False
-    response.result.errors.extend(errors)
-    for error_detail in error_details:
-        container = response.result.error_details.add()
-        dict_to_protobuf(error_detail, container)
+    if errors:
+        response.result.errors.extend(errors)
+    if error_details:
+        for error_detail in error_details:
+            container = response.result.error_details.add()
+            dict_to_protobuf(error_detail, container)
     return control.CallActionError(control.Response(response, None))
 
 instance = MockTransport()
