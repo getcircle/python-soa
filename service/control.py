@@ -225,7 +225,7 @@ class Server(object):
         service_response = soa_pb2.ServiceResponseV1()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
-            action_class = self.get_action_class(action_request.contorl.action)
+            action_class = self.get_action_class(action_request.control.action)
             if not action_class:
                 raise exceptions.UnrecognizedAction(
                     action_request.control.action,
