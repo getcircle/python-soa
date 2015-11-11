@@ -207,6 +207,10 @@ class Server(object):
         if settings.LOG_REQUEST_AND_RESPONSE:
             self.logger.info('sent: %s', protobuf_to_dict(service_response))
 
+    def get_action_class(self, action):
+        action_class = self.actions.get(action)
+        return action_class
+
     @metrics.count('service.request.count')
     @metrics.time('service.response.time')
     def handle_request(self, serialized_request):
@@ -221,7 +225,7 @@ class Server(object):
         service_response = soa_pb2.ServiceResponseV1()
         service_response.control.CopyFrom(service_request.control)
         for action_request in service_request.actions:
-            action_class = self.actions.get(action_request.control.action)
+            action_class = self.get_action_class(action_request.contorl.action)
             if not action_class:
                 raise exceptions.UnrecognizedAction(
                     action_request.control.action,
