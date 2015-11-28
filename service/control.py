@@ -18,7 +18,8 @@ from .transports import local as local_transport
 
 class Response(object):
 
-    def __init__(self, action_response, extension_response):
+    def __init__(self, service_response, action_response, extension_response):
+        self.service_response = service_response
         self._action_response = action_response
         self._extension_response = extension_response
 
@@ -166,7 +167,7 @@ class Client(object):
             raise CallActionError(service_response=service_response, exception=e)
 
         extension_response = action_response.result.Extensions[extension]
-        response_wrapper = Response(action_response, extension_response)
+        response_wrapper = Response(service_response, action_response, extension_response)
         self._post_call_action_hook(response_wrapper)
         if not response_wrapper.success:
             if isinstance(on_error, Exception):
