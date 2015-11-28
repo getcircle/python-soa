@@ -1,5 +1,8 @@
 from service_protobufs import soa_pb2
-from .. import exceptions
+from .. import (
+    exceptions,
+    metrics,
+)
 
 
 class BaseTransport(object):
@@ -13,7 +16,11 @@ class BaseTransport(object):
 
     def handle_request(self, service_request):
         serialized_request = service_request.SerializeToString()
-        return self.process_request(service_request, serialized_request)
+        response = self.process_request(service_request, serialized_request)
+        if not isinstance(response, basestring):
+            with metrics.time('service.response.serialization.time'):
+                response = response.SerializeToString()
+        return response
 
     def process_request(self, service_request, serialized_request):
         raise NotImplementedError('Transport must implement `process_request`')
