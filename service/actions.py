@@ -31,6 +31,7 @@ class Action(object):
     required_fields = None
 
     def __init__(self, service_control, action_request, action_response):
+        self.service_control = service_control
         self.token = service_control.token
         self.service_name = service_control.service
         self._action_request = action_request
