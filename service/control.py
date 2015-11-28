@@ -237,7 +237,7 @@ class Server(object):
             action_response = service_response.actions.add()
             action_response.control.CopyFrom(action_request.control)
             action = action_class(
-                service_request.control,
+                service_response.control,
                 action_request,
                 action_response,
             )
