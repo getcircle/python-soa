@@ -192,6 +192,15 @@ class Action(object):
         bottom, _ = paginator.get_page_bottom_top(self.control.paginator.page)
         return bottom, self.control.paginator.page_size
 
+    def get_paginated_objects(self, objects, paginator=None, page=None, count=None):
+        if paginator is None:
+            paginator = self.get_paginator(objects, count)
+        if page is None:
+            page = self.get_page(paginator)
+
+        service.control.update_paginator_protobuf(self.control.paginator, paginator, page)
+        return page.object_list
+
     def paginated_response(
             self,
             repeated_container,
@@ -201,14 +210,9 @@ class Action(object):
             page=None,
             count=None,
         ):
-        if paginator is None:
-            paginator = self.get_paginator(objects, count)
-
-        if page is None:
-            page = self.get_page(paginator)
-        for item in page.object_list:
+        paginated_objects = self.get_paginated_objects(objects, paginator=paginator, page=page, count=count)
+        for item in paginated_objects:
             transport_func(item, repeated_container)
-        service.control.update_paginator_protobuf(self.control.paginator, paginator, page)
 
     def run(self, *args, **kwargs):
         raise NotImplementedError('Action must define `run` method')
