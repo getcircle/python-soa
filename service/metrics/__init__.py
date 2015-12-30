@@ -9,6 +9,10 @@ from .. import (
 _instance = utils.import_string(settings.DEFAULT_METRICS_HANDLER)
 
 
+def _to_ms(value):
+    return int(round(1000 * value))
+
+
 def start(*args, **kwargs):
     """Handle any configuration required for metrics"""
     if settings.METRICS_ENABLED:
@@ -43,14 +47,27 @@ def histogram(metric_name, value, *args, **kwargs):
         _instance.histogram(metric_name, value, *args, **kwargs)
 
 
+def timing(metric_name, value, use_ms=True, *args, **kwargs):
+    """Sample a timed value.
+
+    Will convert to ms if necessary and record as a histogram value.
+
+    """
+    if settings.METRICS_ENABLED:
+        value = _to_ms(value) if use_ms else value
+        histogram(metric_name, value, *args, **kwargs)
+
+
 @contextmanager
-def time(metric_name, *args, **kwargs):
+def time(metric_name, use_ms=True, *args, **kwargs):
     """A decorator/contextmanager that will track the distribution of execution time"""
     start = pytime.time()
     try:
         yield
     finally:
-        histogram(metric_name, pytime.time() - start, *args, **kwargs)
+        elapsed = pytime.time() - start
+        elapsed = _to_ms(elapsed) if use_ms else elapsed
+        histogram(metric_name, elapsed, *args, **kwargs)
 
 
 @contextmanager
