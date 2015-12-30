@@ -53,6 +53,21 @@ class TestMetrics(base.TestCase):
             time.sleep(0.001)
 
         value = self._get_metric('histogram', 'test')
+        self.assertTrue(value >= 1 and value <= 2)
+
+        with metrics.time('test2', use_ms=False):
+            time.sleep(0.001)
+
+        value = self._get_metric('histogram', 'test2')
+        self.assertTrue(value >= 0.001 and value <= 0.002)
+
+    def test_metrics_timing(self):
+        metrics.timing('test', 0.001)
+        value = self._get_metric('histogram', 'test')
+        self.assertTrue(value >= 1 and value <= 2)
+
+        metrics.timing('test2', 0.001, use_ms=False)
+        value = self._get_metric('histogram', 'test2')
         self.assertTrue(value >= 0.001 and value <= 0.002)
 
     def test_metrics_histogram(self):
