@@ -8,6 +8,7 @@ class SampleServer(service.control.Server):
     actions = {
         'exception_action': base.ExceptionAction,
         'required_fields_action': base.RequiredFieldsAction,
+        'required_fields_container_action': base.RequiredFieldsContainerAction,
     }
 
 
@@ -116,3 +117,12 @@ class TestAction(base.TestCase):
         self.assertIn('FIELD_ERROR', response.errors)
         self.assertEqual(response.error_details[0].detail, 'MISSING')
         self.assertEqual(response.error_details[0].key, 'required_container.required_field')
+
+    def test_action_required_field_missing_required_container(self):
+        with self.assertRaises(service.control.CallActionError) as expected:
+            self.client.call_action('required_fields_container_action')
+
+        response = expected.exception.response
+        self.assertIn('FIELD_ERROR', response.errors)
+        self.assertEqual(response.error_details[0].detail, 'MISSING')
+        self.assertEqual(response.error_details[0].key, 'required_container')

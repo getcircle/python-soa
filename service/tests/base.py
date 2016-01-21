@@ -67,6 +67,13 @@ class RequiredFieldsAction(Action):
         self.response.required_container.CopyFrom(self.request.required_container)
 
 
+class RequiredFieldsContainerAction(Action):
+    required_fields = ('required_container',)
+
+    def run(self, *args, **kwargs):
+        self.response.required_container.CopyFrom(self.request.required_container)
+
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):

@@ -1,6 +1,7 @@
 nose>=1.0
 coverage>=1.0
 mock==1.0.1
+protobuf==3.0.0a3
 
 git+ssh://git@github.com/getcircle/protobuf-to-dict.git@0.2.0
 git+ssh://git@github.com/getcircle/protobuf-soa.git@0.5.1

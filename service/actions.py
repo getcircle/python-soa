@@ -121,15 +121,26 @@ class Action(object):
                         prefix=container_name,
                     )
                     continue
-            try:
-                if not message.HasField(field_name):
-                    self.note_field_error(full_name, 'MISSING')
-            except ValueError:
+
+            descriptor = message.DESCRIPTOR.fields_by_name[field_name]
+            if (
+                descriptor.type != descriptor.TYPE_ENUM and
+                descriptor.type != descriptor.TYPE_MESSAGE and
+                descriptor.label != descriptor.LABEL_REPEATED and
+                getattr(message, field_name) == descriptor.default_value
+            ):
+                self.note_field_error(full_name, 'MISSING')
+            elif descriptor.label == descriptor.LABEL_REPEATED:
                 try:
                     if not len(getattr(message, field_name, [])):
                         self.note_field_error(full_name, 'MISSING')
                 except TypeError:
                     self.note_field_error(full_name, 'MISSING')
+            elif (
+                descriptor.type == descriptor.TYPE_MESSAGE and
+                not getattr(message, field_name).ByteSize()
+            ):
+                self.note_field_error(full_name, 'MISSING')
 
     def validate_message(self, message, prefix=''):
         if not prefix:

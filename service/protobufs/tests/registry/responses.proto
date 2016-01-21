@@ -16,5 +16,6 @@ message Simple {
         optional paginated_action.Response paginated_action = 103;
         optional exception_action.Response exception_action = 104;
         optional required_fields_action.Response required_fields_action = 105;
+        optional required_fields_action.Response required_fields_container_action = 106;
     }
 }
