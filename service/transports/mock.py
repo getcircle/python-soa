@@ -21,6 +21,7 @@ class MockTransport(BaseTransport):
         super(MockTransport, self).__init__(*args, **kwargs)
         self.mock_responses = {}
         self.mock_regex_lookups = {}
+        self.mocked_calls = []
         self._dont_mock_services = set()
 
     def _get_params_hash(self, params):
@@ -159,6 +160,11 @@ class MockTransport(BaseTransport):
             action_request.control.action,
             params,
         )
+        self.mocked_calls.append({
+            'service': action_request.control.service,
+            'action': action_request.control.action,
+            'params': params,
+        })
         try:
             return self.mock_responses[mock_key]
         except KeyError:
