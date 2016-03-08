@@ -29,7 +29,8 @@ class Paginator(object):
             self._count = int(count)
 
         if disabled:
-            self.per_page = len(object_list)
+            # if the list is empty, just use the default page size
+            self.per_page = len(object_list) or self.per_page
 
     def validate_number(self, number):
         """
