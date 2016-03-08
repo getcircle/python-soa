@@ -192,7 +192,12 @@ class Action(object):
         self._action_response.result.success = not self.is_error()
 
     def get_paginator(self, objects, count=None):
-        return Paginator(objects, self.control.paginator.page_size, count=count)
+        return Paginator(
+            objects,
+            self.control.paginator.page_size,
+            count=count,
+            disabled=self.control.paginator.disabled,
+        )
 
     def get_page(self, paginator):
         return paginator.page(self.control.paginator.page)
@@ -221,7 +226,12 @@ class Action(object):
             page=None,
             count=None,
         ):
-        paginated_objects = self.get_paginated_objects(objects, paginator=paginator, page=page, count=count)
+        paginated_objects = self.get_paginated_objects(
+            objects,
+            paginator=paginator,
+            page=page,
+            count=count,
+        )
         for item in paginated_objects:
             transport_func(item, repeated_container)
 
