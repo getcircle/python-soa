@@ -1,0 +1,36 @@
+Changelog
+=========
+
+2014-12-23 - 0.4.1
+------------------
+
+Store a reference to the token an action was called with on the aciton.
+
+2014-12-23 - 0.4.0
+------------------
+
+Don't execute the action if there was an authentication error. We don't even
+want the validation to be called since this could expose information about the
+endpoint.
+
+2014-12-20 - 0.1.2
+------------------
+
+Pull out the soa.proto to its own repo. This lets us share it between the
+various clients and the protobuf-registry.
+
+2014-12-16 - 0.1.1
+------------------
+
+Add helper to output protobuf as a dict to the shell
+Support passing a protobuf object as a parameter
+
+2014-12-16 - 0.1.0
+------------------
+
+Support nested params being passed to call_action
+
+2014-12-16 - 0.0.1
+------------------
+
+Initial release

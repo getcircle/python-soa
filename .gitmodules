@@ -1,0 +1,3 @@
+[submodule "service_protobufs"]
+	path = service_protobufs
+	url = https://c9b60542c1a793a1bcc0b1e95ce3ab3d2da148c4:x-oauth-basic@github.com/getcircle/protobuf-soa.git

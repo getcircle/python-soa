@@ -1,0 +1,10 @@
+package paginated_action;
+
+message Request {
+    optional string echo = 1;
+    optional uint32 total = 2 [default = 100];
+}
+
+message Response {
+    repeated string echos = 1;
+}

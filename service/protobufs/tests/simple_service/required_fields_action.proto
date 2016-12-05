@@ -1,0 +1,20 @@
+package required_fields_action;
+
+message TestContainer {
+    optional string required_field = 1;
+    optional string optional_field = 2;
+}
+
+message Request {
+    optional string required_field = 1;
+    optional string optional_field = 2;
+    repeated string required_repeated_field = 3;
+    optional TestContainer required_container = 4;
+}
+
+message Response {
+    optional string required_field = 1;
+    optional string optional_field = 2;
+    repeated string required_repeated_field = 3;
+    optional TestContainer required_container = 4;
+}

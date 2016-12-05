@@ -1,0 +1,16 @@
+package exception_action;
+
+enum ErrorType {
+    VALUE_ERROR = 1;
+    CUSTOM_ERROR = 2;
+    ACTION_ERROR = 3;
+    ACTION_ERROR_WITH_DETAILS = 4;
+    ACTION_FIELD_ERROR = 5;
+    UNMAPPED_ERROR = 6;
+}
+
+message Request {
+    optional ErrorType error_type = 1;
+}
+
+message Response {}

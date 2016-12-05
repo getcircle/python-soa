@@ -1,0 +1,21 @@
+package tests.registry.responses;
+
+import "service_protobufs/soa.proto";
+
+import "service/protobufs/tests/simple_service/another_action.proto";
+import "service/protobufs/tests/simple_service/exception_action.proto";
+import "service/protobufs/tests/simple_service/paginated_action.proto";
+import "service/protobufs/tests/simple_service/required_fields_action.proto";
+import "service/protobufs/tests/simple_service/simple_action.proto";
+
+
+message Simple {
+    extend soa.ActionResultV1 {
+        optional another_action.Response another_action = 101;
+        optional simple_action.Response simple_action = 102;
+        optional paginated_action.Response paginated_action = 103;
+        optional exception_action.Response exception_action = 104;
+        optional required_fields_action.Response required_fields_action = 105;
+        optional required_fields_action.Response required_fields_container_action = 106;
+    }
+}
